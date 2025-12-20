@@ -50,13 +50,13 @@ const Navbar = () => {
             My Profile
           </NavLink> */}
           <NavLink to="/createlist" className="mr-2 ">
-           Add Listing
+           All requests
           </NavLink>
           <NavLink to="/myservices" className="mr-2 ">
-            My Listings
+           Search
           </NavLink>
-          <NavLink to="/myorders" className="mr-2 ">
-            My Orders
+          <NavLink to="/donate" className="mr-2 ">
+           Donate
           </NavLink>
         </>
       )}
@@ -167,7 +167,7 @@ const Navbar = () => {
                 </p>
               </button>
                <Link
-              to="/dashboard/main"
+              to="/dashboard"
               onClick={() => setActive("dashboard")}
               className={`btn mr-2 ${
                 active === "dashboard" ? " text-white" : ""
@@ -192,17 +192,17 @@ const Navbar = () => {
             </div>
             
           )}
-          {/* {!user && (
-            <Link
-              to="/register"
-              onClick={() => setActive("register")}
-              className={`btn mr-2  ${
-                active === "register" ? " text-white" : ""
+          {!user && (
+             <Link
+              to="/dashboard"
+              onClick={() => setActive("dashboard")}
+              className={`btn mr-2 ${
+                active === "dashboard" ? " text-white" : ""
               }`}
             >
-              Register
+              Dasboard
             </Link>
-          )} */}
+          )}
         </nav>
       </div>
     </div>

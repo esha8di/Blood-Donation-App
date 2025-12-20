@@ -1,14 +1,17 @@
+import { useContext } from "react";
 import { NavLink } from "react-router";
+import { Contextapi } from "../../Authprovider/Authprovider";
 
 
 const Aside = () => {
+  const {role}=useContext(Contextapi);
   return (
     <aside className="bg-white shadow-md p-4">
       <h2 className="text-xl font-semibold mb-6">Admin Set Product Page</h2>
 
       <nav className="space-y-3">
         <NavLink
-          to="/dashboard/main"
+          to="/dashboard"
           end
           className={({ isActive }) =>
             `block rounded-lg px-3 py-2 transition ${
@@ -20,45 +23,42 @@ const Aside = () => {
         </NavLink>
 
         <NavLink
-          to="/dashboard/addproduct"
+          to="/dashboard/addrequest"
           className={({ isActive }) =>
             `block rounded-lg px-3 py-2 transition ${
               isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
             }`
           }
         >
-         Add Product
+         Add Request
         </NavLink>
-        <NavLink
-          to="/dashboard/manageproduct"
+        {
+          role == 'admin' &&
+          (
+            <NavLink
+          to="/dashboard/allusers"
           className={({ isActive }) =>
             `block rounded-lg px-3 py-2 transition ${
               isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
             }`
           }
         >
-        Manage Product
+       All Users
         </NavLink>
-        <NavLink
-          to="/dashboard/addproduct"
-          className={({ isActive }) =>
-            `block rounded-lg px-3 py-2 transition ${
-              isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-            }`
-          }
-        >
-         Add Product
-        </NavLink>
+          )
+        }
+       
+        
 
         <NavLink
-          to="/dashboard/settings"
+          to="/dashboard/myrequest"
           className={({ isActive }) =>
             `block rounded-lg px-3 py-2 transition ${
               isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
             }`
           }
         >
-          Settings
+         My Request
         </NavLink>
       </nav>
     </aside>

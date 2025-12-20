@@ -77,7 +77,9 @@ const Register = () => {
       email,
       name,
       selectedurl,
-     bloodgrp
+     bloodgrp,
+     district,
+     upazila
     };
 
     if (res.data.success == true) {

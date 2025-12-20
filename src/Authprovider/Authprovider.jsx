@@ -11,7 +11,9 @@ const Authprovider = ({children}) => {
     const googleprovider=new GoogleAuthProvider();
     const [user,setUser]=useState(null);
     const [loading,setLoading]=useState(true);
+    const [roleloading,setRoleLoading]=useState(true);
     const [role,setRole]=useState('')
+    const [userstatus, setUserstatus] = useState('')
 
 
     const registerwithemailpass=(email,password)=>{
@@ -55,7 +57,9 @@ const Authprovider = ({children}) => {
         axios.get(`http://localhost:5000/users/role/${user.email}`)
         .then(res=>{
             setRole(res.data.role)
-            setLoading(false)
+            setUserstatus(res.data.status)
+            setLoading(false);
+            setRoleLoading(false);
             // console.log(res.data.role)
         })
     },[user])
@@ -78,7 +82,9 @@ const Authprovider = ({children}) => {
     setLoading,
     signinwithgoogle,
     user,
-    role
+    role,
+    roleloading,
+    userstatus
 
 
 

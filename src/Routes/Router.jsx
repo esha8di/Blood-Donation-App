@@ -4,9 +4,14 @@ import Home from "../components/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboardlayout from "../Dashboardlayout/Dashboardlayout";
-import Dashboard from "../components/Dashboard/Dashboard";
-import Addproduct from "../components/Addproduct/Addproduct";
-import Manageproduct from "../components/Manageproduct/Manageproduct";
+
+import Addrequest from "../DashboardComponents/Addrequest/Addrequest";
+import Dashboard from "../DashboardComponents/Dashboard/Dashboard";
+import Allusers from "../DashboardComponents/Allusers/Allusers";
+import Privaterouter from "./Privaterouter";
+import Myrequest from "../DashboardComponents/Myrequest/Myrequest";
+import Donate from "../components/Donate/Donate";
+
 
 
 
@@ -29,28 +34,40 @@ const router = createBrowserRouter([
             Component:Register,
 
         },
+        {
+            path:"/donate",
+            Component:Donate,
+
+        },
 
     ]
   },
   {
     path:'/dashboard',
-    element:<Dashboardlayout></Dashboardlayout>,
+    element:<Privaterouter>
+      <Dashboardlayout></Dashboardlayout>
+    </Privaterouter>,
     children:[
       {
-        path:'main',
+        path:'/dashboard',
         Component:Dashboard,
 
       },
+     
       {
-        path:'addproduct',
-        Component:Addproduct,
-
+        path:'addrequest',
+        Component:Addrequest,
+      },
+      
+      {
+        path:'allusers',
+        Component:Allusers,
       },
       {
-        path:'manageproduct',
-        Component:Manageproduct,
-
+        path:'myrequest',
+        Component:Myrequest,
       },
+
 
     ]
   }
