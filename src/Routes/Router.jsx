@@ -11,6 +11,7 @@ import Allusers from "../DashboardComponents/Allusers/Allusers";
 import Privaterouter from "./Privaterouter";
 import Myrequest from "../DashboardComponents/Myrequest/Myrequest";
 import Donate from "../components/Donate/Donate";
+import Paymentsuccess from "../components/Paymentsuccess/Paymentsuccess";
 
 
 
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
         {
             path:"/donate",
             Component:Donate,
+
+        },
+        {
+            path:"/payment_success",
+            Component:Paymentsuccess,
 
         },
 
