@@ -6,10 +6,10 @@ import auth from "../../firebase/firebase.init";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import imagegoogle from '../../assets/google_2913970.png'
+// import imagegoogle from '../../assets/google_2913970.png'
 
 const Register = () => {
-  const { registerwithemailpass, signinwithgoogle, setUser } =
+  const { registerwithemailpass } =
     useContext(Contextapi);
   const navigate = useNavigate();
   const [upazilas,setUpazilas]=useState([]);
@@ -39,12 +39,18 @@ const Register = () => {
     const password = e.target.password.value;
     const name = e.target.name.value;
     const photurl = e.target.url;
+    const confirmPassword = e.target.confirm_password.value;
 
     const file = photurl.files[0];
 
     const bloodgrp=e.target.bloodgrp.value;
     console.log(bloodgrp)
     // return
+
+    if (password !== confirmPassword) {
+  return alert("Password and Confirm Password do not match");
+}
+
 
     if (!/[A-Z]/.test(password)) {
       return alert("Password must contain at least one uppercase letter.");
@@ -112,21 +118,21 @@ const Register = () => {
     }
   };
 
-  const handlegooglesignin = () => {
-    signinwithgoogle()
-      .then((result) => {
-        const user = result.user;
-        console.log("uer", user);
-        setUser(user);
-        toast("Logged in successfully hihi");
+  // const handlegooglesignin = () => {
+  //   signinwithgoogle()
+  //     .then((result) => {
+  //       const user = result.user;
+  //       console.log("uer", user);
+  //       setUser(user);
+  //       toast("Logged in successfully hihi");
 
-        navigate(location.state?.from || "/");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast('error')
-      });
-  };
+  //       navigate(location.state?.from || "/");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast('error')
+  //     });
+  // };
 
   return (
     <div className="flex flex-col justify-center items-center my-32">
@@ -164,6 +170,14 @@ const Register = () => {
             placeholder="Password"
           />
 
+<label className="label">Confirm Password</label>
+<input
+  name="confirm_password"
+  type="password"
+  className="input"
+  placeholder="Confirm Password"
+/>
+
           
 
           <select  name='bloodgrp' defaultValue="Select your blood group" className="select">
@@ -198,14 +212,14 @@ const Register = () => {
 </select>
 
          
-          <button
+          {/* <button
             type="button"
             onClick={() => handlegooglesignin()}
             className="btn"
           >
              <img className="h-5" src={imagegoogle} alt="" />
             Sign in with google
-          </button>
+          </button> */}
           <button className="btn btn-neutral mt-4">Register</button>
           <p>
             Have an Account?{" "}

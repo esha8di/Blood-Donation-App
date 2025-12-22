@@ -102,7 +102,7 @@ if (!email || !password) {
           </button></p>
 
         <button  className="btn btn-neutral mt-4">Login</button>
-        <button type='button' onClick={()=>handlegooglesignin()} className="btn">Sign in with google</button>
+        {/* <button type='button' onClick={()=>handlegooglesignin()} className="btn">Sign in with google</button> */}
         
          <p>Don't have an Account? <Link className='text-green-900' to='/register'>Register </Link></p>
       </fieldset>

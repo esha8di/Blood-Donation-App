@@ -2,20 +2,24 @@ import { useContext } from "react";
 import { NavLink } from "react-router";
 import { Contextapi } from "../../Authprovider/Authprovider";
 
-
 const Aside = () => {
-  const {role}=useContext(Contextapi);
-  return (
-    <aside className="bg-white shadow-md p-4">
-      <h2 className="text-xl font-semibold mb-6">Admin Set Product Page</h2>
+  const { role } = useContext(Contextapi);
 
-      <nav className="space-y-3">
+  return (
+    <aside className="bg-white border-r border-gray-300 p-4 w-60 min-h-screen">
+      <h2 className="text-lg font-bold mb-6 text-gray-900">
+        Dashboard ({role})
+      </h2>
+
+      <nav className="flex flex-col space-y-2">
         <NavLink
           to="/dashboard"
           end
           className={({ isActive }) =>
-            `block rounded-lg px-3 py-2 transition ${
-              isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+            `px-3 py-2 rounded transition ${
+              isActive
+                ? "bg-gray-900 text-white"
+                : "text-gray-800 hover:bg-gray-100"
             }`
           }
         >
@@ -25,40 +29,55 @@ const Aside = () => {
         <NavLink
           to="/dashboard/addrequest"
           className={({ isActive }) =>
-            `block rounded-lg px-3 py-2 transition ${
-              isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+            `px-3 py-2 rounded transition ${
+              isActive
+                ? "bg-gray-900 text-white"
+                : "text-gray-800 hover:bg-gray-100"
             }`
           }
         >
-         Add Request
+          Add Request
         </NavLink>
-        {
-          role == 'admin' &&
-          (
-            <NavLink
-          to="/dashboard/allusers"
-          className={({ isActive }) =>
-            `block rounded-lg px-3 py-2 transition ${
-              isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-            }`
-          }
-        >
-       All Users
-        </NavLink>
-          )
-        }
-       
-        
+
+        {role === "admin" && (
+          <NavLink
+            to="/dashboard/allusers"
+            className={({ isActive }) =>
+              `px-3 py-2 rounded transition ${
+                isActive
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-800 hover:bg-gray-100"
+              }`
+            }
+          >
+            All Users
+          </NavLink>
+        )}
 
         <NavLink
           to="/dashboard/myrequest"
           className={({ isActive }) =>
-            `block rounded-lg px-3 py-2 transition ${
-              isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+            `px-3 py-2 rounded transition ${
+              isActive
+                ? "bg-gray-900 text-white"
+                : "text-gray-800 hover:bg-gray-100"
             }`
           }
         >
-         My Request
+          My Request
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/profile"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded transition ${
+              isActive
+                ? "bg-gray-900 text-white"
+                : "text-gray-800 hover:bg-gray-100"
+            }`
+          }
+        >
+          My Profile
         </NavLink>
       </nav>
     </aside>

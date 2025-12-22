@@ -13,6 +13,7 @@ import Myrequest from "../DashboardComponents/Myrequest/Myrequest";
 import Donate from "../components/Donate/Donate";
 import Paymentsuccess from "../components/Paymentsuccess/Paymentsuccess";
 import Searchrequest from "../components/Search/Searchrequest";
+import Profile from "../DashboardComponents/Profile/Profile";
 
 
 
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path:'myrequest',
         Component:Myrequest,
+      },
+      {
+        path:'profile',
+        Component:Profile,
       },
 
 
