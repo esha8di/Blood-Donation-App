@@ -12,6 +12,7 @@ import Privaterouter from "./Privaterouter";
 import Myrequest from "../DashboardComponents/Myrequest/Myrequest";
 import Donate from "../components/Donate/Donate";
 import Paymentsuccess from "../components/Paymentsuccess/Paymentsuccess";
+import Searchrequest from "../components/Search/Searchrequest";
 
 
 
@@ -37,12 +38,19 @@ const router = createBrowserRouter([
         },
         {
             path:"/donate",
-            Component:Donate,
+            element:<Privaterouter>
+              <Donate></Donate>
+            </Privaterouter>
 
         },
         {
             path:"/payment_success",
             Component:Paymentsuccess,
+
+        },
+        {
+            path:"/search",
+            Component:Searchrequest,
 
         },
 

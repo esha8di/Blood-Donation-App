@@ -8,7 +8,7 @@ import Authprovider from './Authprovider/Authprovider.jsx'
 import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
- 
+
     <Authprovider>
       <Toaster></Toaster>
       <RouterProvider router={router} />

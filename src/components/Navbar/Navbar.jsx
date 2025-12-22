@@ -41,9 +41,7 @@ const Navbar = () => {
       <NavLink to="/" className="mr-2 ">
         Home
       </NavLink>
-      <NavLink to="/services" className="mr-2 ">
-       Pets & Supplies
-      </NavLink>
+      
       {user && (
         <>
           {/* <NavLink to="/profile" className="mr-2  ">
@@ -52,7 +50,7 @@ const Navbar = () => {
           <NavLink to="/createlist" className="mr-2 ">
            All requests
           </NavLink>
-          <NavLink to="/myservices" className="mr-2 ">
+          <NavLink to="/search" className="mr-2 ">
            Search
           </NavLink>
           <NavLink to="/donate" className="mr-2 ">
@@ -91,8 +89,8 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-       <img className="h-[50px] hidden md:block rounded-4xl" src="https://img.freepik.com/premium-vector/vector-cute-dog-logo-design-pet-paw-logo-pet-care-pet-shop_729049-88.jpg" alt="" />
-        <a className="btn btn-ghost text-xl font-bold">PetPaw</a>
+       <img className="h-[50px] hidden md:block rounded-4xl" src="https://www.nicepng.com/png/detail/364-3647802_blood-symbol-png-blood-donation-app-logo.png" alt="blood donation" />
+        <a className="btn btn-ghost text-xl font-bold">DropBlood</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>

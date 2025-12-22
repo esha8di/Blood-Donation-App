@@ -94,7 +94,7 @@ const Register = () => {
               toast("registration done");
               console.log("hello", result.user);
               axios
-                .post("http://localhost:5000/users", formData)
+                .post("https://backend-tau-rust-31.vercel.app/users", formData)
                 .then((res) => {
                   console.log("resgid", res);
                 })
