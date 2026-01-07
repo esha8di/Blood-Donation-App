@@ -10,7 +10,8 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 // import imagegoogle from '../../assets/google_2913970.png'
 
 const Register = () => {
-  const { registerwithemailpass } = useContext(Contextapi);
+  const { registerwithemailpass,setUser } = useContext(Contextapi);
+
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [upazilas, setUpazilas] = useState([]);
@@ -104,7 +105,13 @@ const Register = () => {
             photoURL: selectedurl,
           })
             .then(() => {
+              setUser({
+    ...auth.currentUser,
+    displayName: name,
+    photoURL: selectedurl,
+  });
               navigate("/");
+              
               toast("registration done");
               console.log("hello", result.user);
               axiosSecure
