@@ -10,30 +10,25 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 // import imagegoogle from '../../assets/google_2913970.png'
 
 const Register = () => {
-  const { registerwithemailpass } =
-    useContext(Contextapi);
-    const axiosSecure = useAxiosSecure();
+  const { registerwithemailpass } = useContext(Contextapi);
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [upazilas,setUpazilas]=useState([]);
-  const [upazila,setUpazila]=useState('');
-  const [districts,setDistricts]=useState([]);
-  const [district,setDistrict]=useState('');
+  const [upazilas, setUpazilas] = useState([]);
+  const [upazila, setUpazila] = useState("");
+  const [districts, setDistricts] = useState([]);
+  const [district, setDistrict] = useState("");
 
-  useEffect(()=>{
-    axios.get('/upazila.json')
-    .then(res=>{
+  useEffect(() => {
+    axios.get("/upazila.json").then((res) => {
       setUpazilas(res.data.upazilas);
-    })
-    axios.get('/district.json')
-    .then(res=>{
+    });
+    axios.get("/district.json").then((res) => {
       setDistricts(res.data.districts);
-    })
-  },[])
+    });
+  }, []);
 
-  console.log('upazila',upazila,district);
- 
+  console.log("upazila", upazila, district);
 
-  
   const handlesubmit = async (e) => {
     e.preventDefault();
 
@@ -43,16 +38,15 @@ const Register = () => {
     const photurl = e.target.url;
     const confirmPassword = e.target.confirm_password.value;
 
-    const file = photurl.files[0];
+    // const file = photurl.files[0];
 
-    const bloodgrp=e.target.bloodgrp.value;
-    console.log(bloodgrp)
+    const bloodgrp = e.target.bloodgrp.value;
+    console.log(bloodgrp);
     // return
 
     if (password !== confirmPassword) {
-  return alert("Password and Confirm Password do not match");
-}
-
+      return alert("Password and Confirm Password do not match");
+    }
 
     if (!/[A-Z]/.test(password)) {
       return alert("Password must contain at least one uppercase letter.");
@@ -67,27 +61,39 @@ const Register = () => {
     }
 
     // img api
+    // const res = await axios.post(
+    //   `https://api.imgbb.com/1/upload?expiration=600&key=f382280471f6aa436340fe3333c9fa58`,
+    //   { image: file },
+    //   {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   }
+    // );
+
+    // const selectedurl = res.data.data.display_url;
+
+    // console.log(res.data);
+
+    const file = photurl.files[0];
+
+    const imageData = new FormData();
+    imageData.append("image", file);
+
     const res = await axios.post(
       `https://api.imgbb.com/1/upload?expiration=600&key=f382280471f6aa436340fe3333c9fa58`,
-      { image: file },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      imageData
     );
 
     const selectedurl = res.data.data.display_url;
 
-    console.log(res.data);
-
     const formData = {
       email,
       name,
-      selectedurl,
-     bloodgrp,
-     district,
-     upazila
+      photoURL: selectedurl,
+      bloodgrp,
+      district,
+      upazila,
     };
 
     if (res.data.success == true) {
@@ -102,9 +108,7 @@ const Register = () => {
               toast("registration done");
               console.log("hello", result.user);
               axiosSecure
-                .post("http://localhost:5000/users", formData
-                  
-                )
+                .post("http://localhost:5000/users", formData)
                 .then((res) => {
                   console.log("resgid", res);
                 })
@@ -174,48 +178,62 @@ const Register = () => {
             placeholder="Password"
           />
 
-<label className="label">Confirm Password</label>
-<input
-  name="confirm_password"
-  type="password"
-  className="input"
-  placeholder="Confirm Password"
-/>
+          <label className="label">Confirm Password</label>
+          <input
+            name="confirm_password"
+            type="password"
+            className="input"
+            placeholder="Confirm Password"
+          />
 
-          
+          <select
+            name="bloodgrp"
+            defaultValue="Select your blood group"
+            className="select"
+          >
+            <option value="" disabled selected>
+              Select blood group
+            </option>
+            <option value="A+">A+</option>
+            <option value="A-">A−</option>
+            <option value="B+">B+</option>
+            <option value="B-">B−</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB−</option>
+            <option value="O+">O+</option>
+            <option value="O-">O−</option>
+          </select>
+          <select
+            value={upazila}
+            onChange={(e) => {
+              setUpazila(e.target.value);
+            }}
+            defaultValue="Select your upazila"
+            className="select"
+          >
+            <option value="" disabled selected>
+              Select Upazila
+            </option>
+            {upazilas.map((upazila) => (
+              <option>{upazila?.name}</option>
+            ))}
+          </select>
+          <select
+            value={district}
+            onChange={(e) => {
+              setDistrict(e.target.value);
+            }}
+            defaultValue="Select your district"
+            className="select"
+          >
+            <option value="" disabled selected>
+              Select District
+            </option>
+            {districts.map((district) => (
+              <option>{district?.name}</option>
+            ))}
+          </select>
 
-          <select  name='bloodgrp' defaultValue="Select your blood group" className="select">
-  <option value="" disabled selected>Select blood group</option>
-  <option value="A+">A+</option>
-  <option value="A-">A−</option>
-  <option value="B+">B+</option>
-  <option value="B-">B−</option>
-  <option value="AB+">AB+</option>
-  <option value="AB-">AB−</option>
-  <option value="O+">O+</option>
-  <option value="O-">O−</option>
- 
-</select>
-          <select value={upazila}  onChange={e=>{setUpazila(e.target.value)}} defaultValue="Select your upazila" className="select">
-  <option value="" disabled selected>Select Upazila</option>
-  {
-    upazilas.map(upazila=>
-      <option>{upazila?.name}</option>
-    )
-  }
- 
-</select>
-          <select value={district}  onChange={e=>{setDistrict(e.target.value)}} defaultValue="Select your district" className="select">
-  <option value="" disabled selected>Select District</option>
-  {
-    districts.map(district=>
-      <option>{district?.name}</option>
-    )
-  }
- 
-</select>
-
-         
           {/* <button
             type="button"
             onClick={() => handlegooglesignin()}
