@@ -5,7 +5,9 @@ import { updateProfile } from "firebase/auth";
 
 const Profile = () => {
   const { user, setUser } = useContext(Contextapi);
-  const [update, setUpdate] = useState(false);
+  
+  const [isEdit, setIsEdit] = useState(false);
+  console.log('user from profile', user)
 
   const handleupdate = (e) => {
     e.preventDefault();
@@ -33,61 +35,67 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-10">
-      <div className="bg-green-900 py-6 text-center">
-        <h2 className="text-white text-2xl font-semibold">My Profile</h2>
-      </div>
+   <>
+   <form onSubmit={handleupdate} className="space-y-3">
+        <input
+          type="text"
+          name="name"
+          
+          className="w-full border p-2 rounded"
+          placeholder="Name"
+        />
+        
 
-      <div className="p-6 text-center">
-        <div className="flex flex-col items-center">
-          <img
-            src={user?.photoURL}
-            alt="Avatar"
-            className="w-28 h-28 rounded-full border shadow-md"
-          />
+        <input
+          type="email"
+          defaultValue={user?.displayName}
+        
+          
+          className="w-full border p-2 rounded bg-gray-100"
+        />
 
-          <h3 className="text-xl font-bold mt-4">{user?.displayName}</h3>
-          <p className="text-gray-600">{user?.email}</p>
+        <input
+          type="text"
+          name="district"
+          
+          className="w-full border p-2 rounded"
+          placeholder="District"
+        />
 
+        <input
+          type="text"
+          name="upazila"
+          
+          className="w-full border p-2 rounded"
+          placeholder="Upazila"
+        />
+
+        <select
+          name="bloodGroup"
+          
+          className="w-full border p-2 rounded"
+        >
+          <option value="">Select Blood Group</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
+
+        {isEdit && (
           <button
-            onClick={() => setUpdate(!update)}
-            className="mt-4 px-5 py-2 bg-green-800 text-white rounded hover:bg-green-900 transition"
+            type="submit"
+            className="w-full bg-green-600 text-white py-2 rounded"
           >
-            {update ? "Close" : "Update Profile"}
+            Save Changes
           </button>
-        </div>
-      </div>
-
-      {update && (
-        <div className="px-6 pb-6">
-          <form onSubmit={handleupdate} className="space-y-4">
-            <div>
-              <label className="block mb-1 text-gray-700">Name</label>
-              <input
-                name="name"
-                type="text"
-                defaultValue={user?.displayName}
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 text-gray-700">Photo URL</label>
-              <input
-                name="photourl"
-                type="text"
-                defaultValue={user?.photoURL}
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-
-            <button className="w-full py-2 bg-green-800 text-white rounded hover:bg-green-900 transition">
-              Update
-            </button>
-          </form>
-        </div>
-      )}
-    </div>
+        )}
+      </form>
+   </>
   );
 };
 

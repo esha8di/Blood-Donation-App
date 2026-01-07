@@ -41,13 +41,25 @@ const Myrequest = () => {
       });
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this request?")) {
-      axiosSecure.delete(`/myrequest/${id}`).then(() => {
-        setMyrequest((prev) => prev.filter((req) => req._id !== id));
-      });
+ const handleDelete = async (id) => {
+  console.log(id);
+  const confirmDelete = window.confirm("Are you sure you want to delete this request?");
+  console.log(confirmDelete)
+  if (!confirmDelete) return;
+
+  try {
+    const res = await axiosSecure.delete(`/myrequest/${id}`);
+    if (res.status === 200) {
+      // Remove the deleted request from state
+      setMyrequest((prev) => prev.filter((req) => req._id !== id));
+      alert("Request deleted successfully");
     }
-  };
+  } catch (error) {
+    console.error("Failed to delete request:", error);
+    alert("Failed to delete request");
+  }
+};
+
 
   const formatDate = (datetime) => new Date(datetime).toLocaleDateString();
   const formatTime = (datetime) => new Date(datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -58,7 +70,7 @@ const Myrequest = () => {
         <table className="table w-full">
           <thead>
             <tr>
-              <th>#</th>
+              <th></th>
               <th>Recipient Name</th>
               <th>Location</th>
               <th>Date</th>

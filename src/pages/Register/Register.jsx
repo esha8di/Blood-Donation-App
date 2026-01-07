@@ -5,12 +5,14 @@ import { updateProfile } from "firebase/auth";
 import auth from "../../firebase/firebase.init";
 import toast from "react-hot-toast";
 import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 // import imagegoogle from '../../assets/google_2913970.png'
 
 const Register = () => {
   const { registerwithemailpass } =
     useContext(Contextapi);
+    const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [upazilas,setUpazilas]=useState([]);
   const [upazila,setUpazila]=useState('');
@@ -99,8 +101,10 @@ const Register = () => {
               navigate("/");
               toast("registration done");
               console.log("hello", result.user);
-              axios
-                .post("https://backend-tau-rust-31.vercel.app/users", formData)
+              axiosSecure
+                .post("http://localhost:5000/users", formData
+                  
+                )
                 .then((res) => {
                   console.log("resgid", res);
                 })
