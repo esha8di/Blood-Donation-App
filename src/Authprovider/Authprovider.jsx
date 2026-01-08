@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.init';
-import axios from 'axios';
+
 import useAxios from '../Hooks/useAxios';
 // eslint-disable-next-line react-refresh/only-export-components
 export const Contextapi=createContext(null)
