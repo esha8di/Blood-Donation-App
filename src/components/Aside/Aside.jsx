@@ -4,7 +4,7 @@ import { Contextapi } from "../../Authprovider/Authprovider";
 
 const Aside = () => {
   const { role } = useContext(Contextapi);
-
+ console.log(role)
   return (
     <aside className="bg-white border-r border-gray-300 p-4 w-60 min-h-screen">
       <h2 className="text-lg font-bold mb-6 text-gray-900">
@@ -39,7 +39,7 @@ const Aside = () => {
           Add Request
         </NavLink>
 
-        {role === "admin" && (
+        {role == "admin" && (
           <NavLink
             to="/dashboard/allusers"
             className={({ isActive }) =>

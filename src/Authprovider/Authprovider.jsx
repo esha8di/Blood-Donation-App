@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged,
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.init';
 import axios from 'axios';
+import useAxios from '../Hooks/useAxios';
 // eslint-disable-next-line react-refresh/only-export-components
 export const Contextapi=createContext(null)
 
@@ -9,6 +10,8 @@ export const Contextapi=createContext(null)
 
 const Authprovider = ({children}) => {
     const googleprovider=new GoogleAuthProvider();
+
+    const axiosInstance = useAxios();
     const [user,setUser]=useState(null);
     const [loading,setLoading]=useState(true);
     const [roleloading,setRoleLoading]=useState(true);
@@ -54,13 +57,13 @@ const Authprovider = ({children}) => {
     useEffect(()=>{
         if(!user) return;
 
-        axios.get(`http://localhost:5173/users/role/${user.email}`)
+        axiosInstance.get(`/users/role/${user.email}`)
         .then(res=>{
             setRole(res.data.role)
             setUserstatus(res.data.status)
             setLoading(false);
             setRoleLoading(false);
-            // console.log(res.data.role)
+            console.log(res.data.role)
         })
     },[user])
 
