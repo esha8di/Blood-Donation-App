@@ -1,36 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import useAxiosSecure from '../../Hooks/useAxiosSecure';
-import { useContext } from 'react';
-import { Contextapi } from '../../Authprovider/Authprovider';
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Contextapi } from "../../Authprovider/Authprovider";
 
 const Profile = () => {
-  const {user} = useContext(Contextapi);
-   const axiosSecure = useAxiosSecure();
-   const [currentUser, setCurrentUser] = useState([])
-   const [isEditing, setIsEditing] = useState(false)
+  const { user } = useContext(Contextapi);
+  const axiosSecure = useAxiosSecure();
 
-    useEffect(()=>{
-      axiosSecure.get(`/users/profile/${user?.email}`)
-      .then(data=>{
-        console.log(data.data)
-        setCurrentUser(data.data)
-      })
-      
-    },[axiosSecure, user?.email])
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-    const onclickUpdate = (e)=>{
-      e.preventDefault();
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
 
-      setIsEditing(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    district: "",
+    upazila: "",
+    bloodgrp: "",
+  });
 
-      
+  /* ---------------- Load District & Upazila ---------------- */
+  useEffect(() => {
+    axios.get("/district.json").then((res) => {
+      setDistricts(res.data.districts);
+    });
+
+    axios.get("/upazila.json").then((res) => {
+      setUpazilas(res.data.upazilas);
+    });
+  }, []);
+
+  /* ---------------- Load User Profile ---------------- */
+  useEffect(() => {
+    if (!user?.email) return;
+
+    axiosSecure.get(`/users/profile/${user.email}`).then((res) => {
+      setCurrentUser(res.data);
+    });
+  }, [axiosSecure, user?.email]);
+
+  /* ---------------- Sync user → form ---------------- */
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser.name || "",
+        district: currentUser.district || "",
+        upazila: currentUser.upazila || "",
+        bloodgrp: currentUser.bloodgrp || "",
+      });
     }
+  }, [currentUser]);
+
+  /* ---------------- Handle Change ---------------- */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  /* ---------------- Save Profile ---------------- */
+  const onclickUpdate = (e) => {
+    e.preventDefault();
+
+    axiosSecure
+      .put(`/users/profile/${user.email}`, formData)
+      .then(() => {
+        setIsEditing(false);
+      });
+  };
+
+  if (!currentUser) return <p className="text-center">Loading...</p>;
+
   return (
-   
-    <div>
-     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
-      
-      {/* Top Edit Button */}
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
+      {/* Edit Button */}
       <div className="flex justify-end mb-4">
         {!isEditing && (
           <button
@@ -43,11 +86,10 @@ const Profile = () => {
       </div>
 
       <form onSubmit={onclickUpdate} className="space-y-4">
-
         {/* Avatar */}
         <div className="flex justify-center">
           <img
-             src={currentUser?.selectedurl}
+            src={currentUser.selectedurl}
             alt="avatar"
             className="w-24 h-24 rounded-full"
           />
@@ -59,19 +101,19 @@ const Profile = () => {
           <input
             type="text"
             name="name"
-            value={currentUser?.name}
-            // onChange={handleChange}
+            value={formData.name}
+            onChange={handleChange}
             disabled={!isEditing}
             className="w-full border p-2 rounded disabled:bg-gray-100"
           />
         </div>
 
-        {/* Email (always disabled) */}
+        {/* Email */}
         <div>
           <label className="block font-medium">Email</label>
           <input
             type="email"
-            value={currentUser?.email}
+            value={currentUser.email}
             disabled
             className="w-full border p-2 rounded bg-gray-100"
           />
@@ -80,36 +122,51 @@ const Profile = () => {
         {/* District */}
         <div>
           <label className="block font-medium">District</label>
-          <input
-            type="text"
+          <select
             name="district"
-            value={currentUser?.district}
-            // onChange={handleChange}
+            value={formData.district}
+            onChange={handleChange}
             disabled={!isEditing}
             className="w-full border p-2 rounded disabled:bg-gray-100"
-          />
+          >
+            <option value="">Select District</option>
+            {districts.map((d, index) => (
+              <option key={index} value={d.name}>
+                {d.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Upazila */}
         <div>
           <label className="block font-medium">Upazila</label>
-          <input
-            type="text"
+          <select
             name="upazila"
-            value={currentUser?.upazila}
-            // onChange={handleChange}
+            value={formData.upazila}
+            onChange={handleChange}
             disabled={!isEditing}
             className="w-full border p-2 rounded disabled:bg-gray-100"
-          />
+          >
+            <option value="">Select Upazila</option>
+
+            {upazilas
+             
+              .map((u, index) => (
+                <option key={index} value={u.name}>
+                  {u.name}
+                </option>
+              ))}
+          </select>
         </div>
 
         {/* Blood Group */}
         <div>
           <label className="block font-medium">Blood Group</label>
           <select
-            name="bloodGroup"
-            value={currentUser?.bloodgrp}
-            // onChange={handleChange}
+            name="bloodgrp"
+            value={formData.bloodgrp}
+            onChange={handleChange}
             disabled={!isEditing}
             className="w-full border p-2 rounded disabled:bg-gray-100"
           >
@@ -135,7 +192,6 @@ const Profile = () => {
           </button>
         )}
       </form>
-    </div>
     </div>
   );
 };
