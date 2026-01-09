@@ -63,8 +63,9 @@ const Profile = () => {
     e.preventDefault();
 
     axiosSecure
-      .put(`/users/profile/${user.email}`, formData)
-      .then(() => {
+      .put(`/profile/update/${user.email}`, formData)
+      .then((res) => {
+        console.log(res)
         setIsEditing(false);
       });
   };
