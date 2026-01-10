@@ -73,129 +73,150 @@ const Profile = () => {
 
   if (!currentUser) return <p className="text-center">Loading...</p>;
 
-  return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
-      {/* Edit Button */}
-      <div className="flex justify-end mb-4">
+ return (
+  <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+    <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden">
+      
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b">
+        <h2 className="text-lg md:text-xl font-semibold text-gray-800">
+          My Profile
+        </h2>
+
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="px-4 py-2 bg-black text-white rounded"
+            className="px-4 py-2 text-sm rounded-lg bg-black text-white hover:bg-gray-800 transition"
           >
-            Edit
+            Edit Profile
           </button>
         )}
       </div>
 
-      <form onSubmit={onclickUpdate} className="space-y-4">
-        {/* Image */}
-        <div className="flex justify-center">
+      {/* Body */}
+      <form onSubmit={onclickUpdate} className="p-6 space-y-6">
+        
+       
+        <div className="flex flex-col items-center gap-2">
           <img
             src={currentUser.selectedurl}
             alt="avatar"
-            className="w-24 h-24 rounded-full"
+            className="w-24 h-24 md:w-28 md:h-28 rounded-full border object-cover"
           />
+          <p className="text-sm text-gray-500">
+            Profile Photo
+          </p>
         </div>
 
-        {/* Name */}
-        <div>
-          <label className="block font-medium">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            disabled={!isEditing}
-            className="w-full border p-2 rounded disabled:bg-gray-100"
-          />
-        </div>
+       
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        {/* Email */}
-        <div>
-          <label className="block font-medium">Email</label>
-          <input
-            type="email"
-            value={currentUser.email}
-            disabled
-            className="w-full border p-2 rounded bg-gray-100"
-          />
-        </div>
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full border rounded-lg px-3 py-2 disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black"
+            />
+          </div>
 
-        {/* District */}
-        <div>
-          <label className="block font-medium">District</label>
-          <select
-            name="district"
-            value={formData.district}
-            onChange={handleChange}
-            disabled={!isEditing}
-            className="w-full border p-2 rounded disabled:bg-gray-100"
-          >
-            <option value="">Select District</option>
-            {districts.map((d, index) => (
-              <option key={index} value={d.name}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-        </div>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              value={currentUser.email}
+              disabled
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
+            />
+          </div>
 
-        {/* Upazila */}
-        <div>
-          <label className="block font-medium">Upazila</label>
-          <select
-            name="upazila"
-            value={formData.upazila}
-            onChange={handleChange}
-            disabled={!isEditing}
-            className="w-full border p-2 rounded disabled:bg-gray-100"
-          >
-            <option value="">Select Upazila</option>
+          {/* District */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              District
+            </label>
+            <select
+              name="district"
+              value={formData.district}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full border rounded-lg px-3 py-2 disabled:bg-gray-100"
+            >
+              <option value="">Select District</option>
+              {districts.map((d, i) => (
+                <option key={i} value={d.name}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            {upazilas
-             
-              .map((u, index) => (
-                <option key={index} value={u.name}>
+          {/* Upazila */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Upazila
+            </label>
+            <select
+              name="upazila"
+              value={formData.upazila}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full border rounded-lg px-3 py-2 disabled:bg-gray-100"
+            >
+              <option value="">Select Upazila</option>
+              {upazilas.map((u, i) => (
+                <option key={i} value={u.name}>
                   {u.name}
                 </option>
               ))}
-          </select>
-        </div>
+            </select>
+          </div>
 
-        {/* Blood Group */}
-        <div>
-          <label className="block font-medium">Blood Group</label>
-          <select
-            name="bloodgrp"
-            value={formData.bloodgrp}
-            onChange={handleChange}
-            disabled={!isEditing}
-            className="w-full border p-2 rounded disabled:bg-gray-100"
-          >
-            <option value="">Select</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-          </select>
+          {/* Blood Group */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Blood Group
+            </label>
+            <select
+              name="bloodgrp"
+              value={formData.bloodgrp}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full border rounded-lg px-3 py-2 disabled:bg-gray-100"
+            >
+              <option value="">Select Blood Group</option>
+              {["A+","A-","B+","B-","O+","O-","AB+","AB-"].map(bg => (
+                <option key={bg} value={bg}>{bg}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Save Button */}
         {isEditing && (
-          <button
-            type="submit"
-            className="w-full py-2 bg-black text-white rounded"
-          >
-            Save
-          </button>
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="w-full md:w-auto px-6 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition"
+            >
+              Save Changes
+            </button>
+          </div>
         )}
       </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Profile;

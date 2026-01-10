@@ -8,14 +8,28 @@ const DashboardHome = () => {
   const axiosSecure = useAxiosSecure();
   const [currentUser, setCurrentUser] =useState([]);
 
-  useEffect(() => {
-    axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
+  const fetchData = () =>{
+     axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
       console.log(res.data);
       setCurrentUser(res.data)
     });
+
+  }
+  useEffect(() => {
+    fetchData()
+   
   }, [axiosSecure, user]);
 
-  console.log(currentUser)
+  const handlestatus =(_id, status)=>{
+    console.log(_id)
+    
+    axiosSecure.patch(`/update/request/status?id=${_id}&status=${status}`)
+      .then(res=>{
+        console.log(res.data)
+        fetchData()
+       
+      })
+  }
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Welcome Section */}
@@ -84,6 +98,8 @@ const DashboardHome = () => {
             </div>
 
             {/* Donor Info (shown only in progress – UI only) */}
+
+            
             <div className="md:col-span-2 lg:col-span-3 border-t pt-3">
               <p className="text-sm text-gray-500">Donor Information</p>
               <p className="text-sm">
@@ -96,13 +112,19 @@ const DashboardHome = () => {
 
             {/* Action Buttons */}
             <div className="md:col-span-2 lg:col-span-3 flex flex-wrap gap-2 justify-end">
-              {/* Status Buttons (UI only – visible in progress) */}
-              <button className="px-3 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600">
+              {
+                u?.donor_status == "inprogress"
+                && 
+                (<>
+                <button onClick={()=>handlestatus(u?._id, "Done")} className="px-3 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600">
                 Done
               </button>
-              <button className="px-3 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600">
+              <button onClick={()=>handlestatus(u?._id, "Cancel")} className="px-3 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600">
                 Cancel
-              </button>
+              </button></>)
+              }
+             
+              
 
               {/* CRUD Buttons */}
               <button className="px-3 py-1 text-sm rounded border border-blue-500 text-blue-500 hover:bg-blue-50">
