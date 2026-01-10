@@ -14,6 +14,7 @@ import Donate from "../components/Donate/Donate";
 import Paymentsuccess from "../components/Paymentsuccess/Paymentsuccess";
 import Searchrequest from "../components/Search/Searchrequest";
 import Profile from "../DashboardComponents/Profile/Profile";
+import DashboardHome from "../DashboardComponents/DashboardHome/DashboardHome";
 
 
 
@@ -64,8 +65,9 @@ const router = createBrowserRouter([
     </Privaterouter>,
     children:[
       {
-        path:'dashboard',
-        Component:Dashboard,
+        index:true,
+        // path:'dashboardhome',
+        Component:DashboardHome,
 
       },
      
@@ -86,6 +88,7 @@ const router = createBrowserRouter([
         path:'profile',
         Component:Profile,
       },
+      
 
 
     ]

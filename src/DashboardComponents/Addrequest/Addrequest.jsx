@@ -201,7 +201,7 @@ const Addrequest = () => {
           ></textarea>
 
          
-          <button type="submit" className="btn btn-primary w-full mt-4">
+          <button type="submit" className="btn bg-black btn-primary w-full mt-4">
             Request Blood
           </button>
         </form>

@@ -20,7 +20,7 @@ const Profile = () => {
     bloodgrp: "",
   });
 
-  /* ---------------- Load District & Upazila ---------------- */
+  
   useEffect(() => {
     axios.get("/district.json").then((res) => {
       setDistricts(res.data.districts);
@@ -31,7 +31,7 @@ const Profile = () => {
     });
   }, []);
 
-  /* ---------------- Load User Profile ---------------- */
+ 
   useEffect(() => {
     if (!user?.email) return;
 
@@ -40,9 +40,10 @@ const Profile = () => {
     });
   }, [axiosSecure, user?.email]);
 
-  /* ---------------- Sync user → form ---------------- */
+  
   useEffect(() => {
     if (currentUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: currentUser.name || "",
         district: currentUser.district || "",
@@ -79,7 +80,7 @@ const Profile = () => {
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="px-4 py-2 bg-black text-white rounded"
           >
             Edit
           </button>
@@ -87,7 +88,7 @@ const Profile = () => {
       </div>
 
       <form onSubmit={onclickUpdate} className="space-y-4">
-        {/* Avatar */}
+        {/* Image */}
         <div className="flex justify-center">
           <img
             src={currentUser.selectedurl}
@@ -187,7 +188,7 @@ const Profile = () => {
         {isEditing && (
           <button
             type="submit"
-            className="w-full py-2 bg-green-600 text-white rounded"
+            className="w-full py-2 bg-black text-white rounded"
           >
             Save
           </button>

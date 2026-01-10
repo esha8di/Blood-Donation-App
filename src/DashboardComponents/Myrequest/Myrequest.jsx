@@ -1,182 +1,96 @@
-import React, { useEffect, useState } from "react";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useNavigate } from "react-router";
+import React, { useEffect, useState } from 'react';
+import useAxiosSecure from '../../Hooks/useAxiosSecure';
 
 const Myrequest = () => {
-  const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
-  const [myrequest, setMyrequest] = useState([]);
-  const [totalrequest, setTotalrequest] = useState(0);
-  const [itemperpage, setItemperpage] = useState(10);
-  const [currentpage, setCurrentpage] = useState(1);
+    const axiosSecure=useAxiosSecure();
+    const [myrequest,setMyrequest] = useState([])
+    const [totalrequest, setTotalrequest] = useState(0)
+    const [itemperpage, setItemperpage] = useState(10)
+    const [currentpage, setCurrentpage] = useState(1)
 
-  useEffect(() => {
-    axiosSecure
-      .get(`/myrequest?page=${currentpage - 1}&size=${itemperpage}`)
-      .then((res) => {
-        setMyrequest(res.data.request);
-        setTotalrequest(res.data.totalRequest);
-      });
-  }, [axiosSecure, currentpage, itemperpage]);
+    useEffect(()=>{
+        axiosSecure.get(`/myrequest?page=${currentpage-1}&size=${itemperpage}`)
+        .then(res=>{
+           
+            setMyrequest(res.data.request);
+            console.log(res.data)
+            setTotalrequest(res.data.totalRequest);
 
-  const numberOfPages = Math.ceil(totalrequest / itemperpage);
-  const pages = [...Array(numberOfPages).keys()].map((e) => e + 1);
+        })
+    }, [axiosSecure, currentpage, itemperpage])
 
-  const onlcickpre = () => {
-    if (currentpage > 1) setCurrentpage(currentpage - 1);
-  };
-  const onlcicknext = () => {
-    if (currentpage < pages.length) setCurrentpage(currentpage + 1);
-  };
+    const numberOfPages= Math.ceil(totalrequest/itemperpage)
 
-  const handleStatusChange = (id, status) => {
-    axiosSecure
-      .patch(`/myrequest/${id}/status`, { status })
-      .then(() => {
-        setMyrequest((prev) =>
-          prev.map((req) =>
-            req._id === id ? { ...req, donor_status: status } : req
-          )
-        );
-      });
-  };
+    const pages= [...Array(numberOfPages).keys()].map(e => e+1)
 
- const handleDelete = async (id) => {
-  console.log(id);
-  const confirmDelete = window.confirm("Are you sure you want to delete this request?");
-  console.log(confirmDelete)
-  if (!confirmDelete) return;
+ console.log('myrequestdata',numberOfPages ,pages)
 
-  try {
-    const res = await axiosSecure.delete(`/myrequest/${id}`);
-    if (res.status === 200) {
-      // Remove the deleted request from state
-      setMyrequest((prev) => prev.filter((req) => req._id !== id));
-      alert("Request deleted successfully");
+ const onlcickpre = () =>{
+  if(currentpage>1)
+  setCurrentpage(currentpage-1)
+ }
+ const onlcicknext = () =>{
+  if(currentpage<pages.length)
+  setCurrentpage(currentpage+1)
+ }
+    
+    return (
+        <div>
+           
+                    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Job</th>
+        <th>Favorite Color</th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* row 1 */}
+      {
+        myrequest.map((my, index) =>
+             <tr>
+        <th>{(currentpage*10) + (index+1)-10}</th>
+        <td>{my?.requesterName}</td>
+        <td>{my?.hospitalName}</td>
+        <td>Blue</td>
+      </tr>
+
+        )
+      }
+     
+     
+     
+    </tbody>
+  </table>
+</div>
+
+<div className='flex-1 justify-center items-center'>
+    <button className='btn  hover:bg-black hover:text-white'
+   onClick={()=>onlcickpre()} >pre</button>
+    {
+        pages.map( page =>{
+           return <button 
+           className={`btn mr-2 ${currentpage == page ? 'bg-black text-white' : ''}`}
+           onClick={()=>setCurrentpage(page)}
+            >{page}</button>
+        })
     }
-  } catch (error) {
-    console.error("Failed to delete request:", error);
-    alert("Failed to delete request");
-  }
-};
+    <button
+  onClick={onlcicknext}
+  className='btn  hover:bg-black hover:text-white'
+>
+  Next
+</button>
 
+</div>
 
-  const formatDate = (datetime) => new Date(datetime).toLocaleDateString();
-  const formatTime = (datetime) => new Date(datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  return (
-    <div>
-      <div className="overflow-x-auto rounded-box border border-gray-200 bg-white">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Recipient Name</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Blood Group</th>
-              <th>Status</th>
-              <th>Donor Info</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myrequest.map((req, index) => (
-              <tr key={req._id}>
-                <th>{(currentpage - 1) * itemperpage + index + 1}</th>
-                <td>{req.recipientName}</td>
-                <td>
-                  {req.district}, {req.upazila}
-                </td>
-                <td>{formatDate(req.donationDateTime)}</td>
-                <td>{formatTime(req.donationDateTime)}</td>
-                <td>{req.bloodGroup}</td>
-                <td>{req.donor_status}</td>
-                <td>
-                  {req.donor_status === "inprogress" && (
-                    <>
-                      {req.requesterName} <br />
-                      {req.requesterEmail}
-                    </>
-                  )}
-                </td>
-                <td className="space-x-2">
-                  <button
-                    onClick={() => navigate(`/dashboard/myrequest/${req._id}`)}
-                    className="btn btn-sm bg-gray-200 hover:bg-gray-300"
-                  >
-                    View
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      navigate(`/dashboard/myrequest/edit/${req._id}`)
-                    }
-                    className="btn btn-sm bg-gray-200 hover:bg-gray-300"
-                  >
-                    Edit
-                  </button>
-
-                  {req.donor_status === "inprogress" && (
-                    <>
-                      <button
-                        onClick={() => handleStatusChange(req._id, "done")}
-                        className="btn btn-sm bg-green-500 text-white hover:bg-green-600"
-                      >
-                        Done
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleStatusChange(req._id, "canceled")
-                        }
-                        className="btn btn-sm bg-red-500 text-white hover:bg-red-600"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  )}
-
-                  <button
-                    onClick={() => handleDelete(req._id)}
-                    className="btn btn-sm bg-red-200 hover:bg-red-300"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex justify-center items-center mt-4 space-x-2">
-        <button
-          className="btn bg-gray-200 hover:bg-gray-300"
-          onClick={onlcickpre}
-        >
-          Previous
-        </button>
-        {pages.map((page) => (
-          <button
-            key={page}
-            className={`btn ${
-              currentpage === page ? "bg-black text-white" : "bg-gray-200"
-            }`}
-            onClick={() => setCurrentpage(page)}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className="btn bg-gray-200 hover:bg-gray-300"
-          onClick={onlcicknext}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
+               
+        </div>
+    );
 };
 
 export default Myrequest;

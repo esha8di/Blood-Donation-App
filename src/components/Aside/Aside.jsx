@@ -1,102 +1,92 @@
-import { useContext} from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { Contextapi } from "../../Authprovider/Authprovider";
-// import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Aside = () => {
   const { role } = useContext(Contextapi);
-  // const axiosSecure = useAxiosSecure();
-  // const [users, setUsers]=useState([]);
+  const [open, setOpen] = useState(false);
 
-//   useEffect(()=>{
-//     axiosSecure.get('/users')
-//   .then(data=>{
-//     console.log(data);
-//     setUsers(data.data);
-
-//   })
-//   .catch(err => console.log(err));
-
-//   },[axiosSecure])
-//  console.log(role)
-
+  const linkClass = ({ isActive }) =>
+    `block px-4 py-2 rounded-md transition font-medium
+     ${
+       isActive
+         ? "bg-gray-900 text-white"
+         : "text-gray-700 hover:bg-gray-100"
+     }`;
 
   return (
-    <aside className="bg-white border-r border-gray-300 p-4 w-60 min-h-screen">
-      <h2 className="text-lg font-bold mb-6 text-gray-900">
-        Dashboard ({role})
-      </h2>
+    <>
+      {/* 🔹 MOBILE TOP BAR */}
+      <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <h2 className="text-lg font-bold">Dashboard</h2>
 
-      <nav className="flex flex-col space-y-2">
-        <NavLink
-          to="/dashboard"
-          end
-          className={({ isActive }) =>
-            `px-3 py-2 rounded transition ${
-              isActive
-                ? "bg-gray-900 text-white"
-                : "text-gray-800 hover:bg-gray-100"
-            }`
-          }
+        <button
+          onClick={() => setOpen(!open)}
+          className="px-3 py-1 border rounded-md text-sm"
         >
-          Home
-        </NavLink>
+          Menu
+        </button>
+      </div>
 
-        <NavLink
-          to="/dashboard/addrequest"
-          className={({ isActive }) =>
-            `px-3 py-2 rounded transition ${
-              isActive
-                ? "bg-gray-900 text-white"
-                : "text-gray-800 hover:bg-gray-100"
-            }`
-          }
-        >
-          Add Request
-        </NavLink>
-
-        {role == "admin" && (
-          <NavLink
-            to="/dashboard/allusers"
-            className={({ isActive }) =>
-              `px-3 py-2 rounded transition ${
-                isActive
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-800 hover:bg-gray-100"
-              }`
-            }
-          >
-            All Users
+      {/* 🔹 MOBILE DROPDOWN MENU */}
+      {open && (
+        <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 space-y-2">
+          <NavLink to="/dashboard" end className={linkClass} onClick={() => setOpen(false)}>
+            Home
           </NavLink>
-        )}
 
-        <NavLink
-          to="/dashboard/myrequest"
-          className={({ isActive }) =>
-            `px-3 py-2 rounded transition ${
-              isActive
-                ? "bg-gray-900 text-white"
-                : "text-gray-800 hover:bg-gray-100"
-            }`
-          }
-        >
-          My Request
-        </NavLink>
+          <NavLink to="/dashboard/addrequest" className={linkClass} onClick={() => setOpen(false)}>
+            Add Request
+          </NavLink>
 
-        <NavLink
-        to="/dashboard/profile"
-          className={({ isActive }) =>
-            `px-3 py-2 rounded transition ${
-              isActive
-                ? "bg-gray-900 text-white"
-                : "text-gray-800 hover:bg-gray-100"
-            }`
-          }
-        >
-          My Profile
-        </NavLink>
-      </nav>
-    </aside>
+          {role === "admin" && (
+            <NavLink to="/dashboard/allusers" className={linkClass} onClick={() => setOpen(false)}>
+              All Users
+            </NavLink>
+          )}
+
+          <NavLink to="/dashboard/myrequest" className={linkClass} onClick={() => setOpen(false)}>
+            My Requests
+          </NavLink>
+
+          <NavLink to="/dashboard/profile" className={linkClass} onClick={() => setOpen(false)}>
+            My Profile
+          </NavLink>
+        </div>
+      )}
+
+      {/* 🔹 DESKTOP SIDEBAR */}
+      <aside className="hidden md:block bg-white border-r border-gray-200 w-64 min-h-screen p-5">
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900">Dashboard</h2>
+          <p className="text-sm text-gray-500 capitalize">{role}</p>
+        </div>
+
+        <nav className="flex flex-col space-y-2">
+          <NavLink to="/dashboard" end className={linkClass}>
+            Home
+          </NavLink>
+
+          <NavLink to="/dashboard/addrequest" className={linkClass}>
+            Add Request
+          </NavLink>
+
+          {role === "admin" && (
+            <NavLink to="/dashboard/allusers" className={linkClass}>
+              All Users
+            </NavLink>
+          )}
+
+          <NavLink to="/dashboard/myrequest" className={linkClass}>
+            My Requests
+          </NavLink>
+
+          <NavLink to="/dashboard/profile" className={linkClass}>
+            My Profile
+          </NavLink>
+        </nav>
+      </aside>
+    </>
   );
 };
 
