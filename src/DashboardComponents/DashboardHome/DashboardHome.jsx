@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Contextapi } from "../../Authprovider/Authprovider";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Link } from "react-router";
@@ -6,13 +6,16 @@ import { Link } from "react-router";
 const DashboardHome = () => {
   const { user } = useContext(Contextapi);
   const axiosSecure = useAxiosSecure();
+  const [currentUser, setCurrentUser] =useState([]);
 
   useEffect(() => {
     axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
       console.log(res.data);
+      setCurrentUser(res.data)
     });
-  }, [axiosSecure, user?.email]);
+  }, [axiosSecure, user]);
 
+  console.log(currentUser)
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Welcome Section */}
@@ -44,39 +47,39 @@ const DashboardHome = () => {
         <h3 className="text-lg font-semibold">Recent Donation Requests</h3>
 
         {/* Donation Request Card */}
-        {[1, 2, 3].map((item) => (
+        {currentUser.map((u) => (
           <div
-            key={item}
+            key={u?._id}
             className="bg-white rounded-xl shadow p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
           >
             {/* Recipient Info */}
             <div>
               <p className="text-sm text-gray-500">Recipient Name</p>
-              <p className="font-medium">John Doe</p>
+              <p className="font-medium">{u?.recipientName}</p>
 
               <p className="text-sm text-gray-500 mt-2">Location</p>
-              <p className="font-medium">Dhaka, Mirpur</p>
+              <p className="font-medium">{u?.address}</p>
             </div>
 
             {/* Donation Info */}
             <div>
-              <p className="text-sm text-gray-500">Donation Date</p>
-              <p className="font-medium">10 Jan 2026</p>
+              <p className="text-sm text-gray-500">Donation Date and Time</p>
+              <p className="font-medium">{u?.donationDateTime}</p>
 
-              <p className="text-sm text-gray-500 mt-2">Donation Time</p>
-              <p className="font-medium">3:30 PM</p>
+              <p className="text-sm text-gray-500 mt-2">Hospital Name</p>
+              <p className="font-medium">{u?.hospitalName}</p>
             </div>
 
             {/* Blood & Status */}
             <div>
               <p className="text-sm text-gray-500">Blood Group</p>
               <span className="inline-block mt-1 px-3 py-1 text-sm rounded-full bg-red-100 text-red-600 font-semibold">
-                A+
+                {u?.bloodGroup}
               </span>
 
               <p className="text-sm text-gray-500 mt-3">Status</p>
               <span className="inline-block px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-600">
-                In Progress
+                {u?.donor_status}
               </span>
             </div>
 
@@ -84,10 +87,10 @@ const DashboardHome = () => {
             <div className="md:col-span-2 lg:col-span-3 border-t pt-3">
               <p className="text-sm text-gray-500">Donor Information</p>
               <p className="text-sm">
-                Name: <span className="font-medium">Jane Smith</span>
+                Name: <span className="font-medium">{user?.displayName}</span>
               </p>
               <p className="text-sm">
-                Email: <span className="font-medium">jane@email.com</span>
+                Email: <span className="font-medium">{user?.email}</span>
               </p>
             </div>
 
