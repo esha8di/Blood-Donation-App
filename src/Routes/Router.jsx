@@ -15,6 +15,9 @@ import Paymentsuccess from "../components/Paymentsuccess/Paymentsuccess";
 import Searchrequest from "../components/Search/Searchrequest";
 import Profile from "../DashboardComponents/Profile/Profile";
 import DashboardHome from "../DashboardComponents/DashboardHome/DashboardHome";
+import EditReq from "../DashboardComponents/EditReq/EditReq";
+import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
+import DeleteReq from "../DashboardComponents/DeleteReq/DeleteReq";
 
 
 
@@ -87,6 +90,18 @@ const router = createBrowserRouter([
       {
         path:'profile',
         Component:Profile,
+      },
+      {
+        path:'edit/:id',
+        Component:EditReq,
+      },
+      {
+        path:'view/:id',
+        Component:ViewReq,
+      },
+      {
+        path:'delete',
+        Component:DeleteReq,
       },
       
 

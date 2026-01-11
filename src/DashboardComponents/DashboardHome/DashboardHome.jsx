@@ -128,13 +128,13 @@ const DashboardHome = () => {
 
               {/* CRUD Buttons */}
               <button className="px-3 py-1 text-sm rounded border border-blue-500 text-blue-500 hover:bg-blue-50">
-                View
+               <Link to={`/dashboard/view/${u?._id}`}>View</Link> 
               </button>
               <button className="px-3 py-1 text-sm rounded border border-yellow-500 text-yellow-500 hover:bg-yellow-50">
-                Edit
+               <Link to={`/dashboard/edit/${u?._id}`}>Edit</Link>
               </button>
               <button className="px-3 py-1 text-sm rounded border border-red-500 text-red-500 hover:bg-red-50">
-                Delete
+               <Link to="/dashboard/delete">Delete</Link>
               </button>
             </div>
           </div>
