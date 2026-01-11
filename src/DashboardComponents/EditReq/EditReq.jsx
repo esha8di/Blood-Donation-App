@@ -30,8 +30,7 @@ const EditReq = () => {
   // Fetch districts and upazilas JSON
   useEffect(() => {
     axios.get('/district.json').then(res => {setDistricts(res.data.districts);
-        console.log("districts", districts)
-
+       
     });
     axios.get('/upazila.json').then(res => setUpazilas(res.data.upazilas));
   }, []);

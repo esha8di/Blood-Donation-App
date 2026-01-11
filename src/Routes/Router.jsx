@@ -17,7 +17,7 @@ import Profile from "../DashboardComponents/Profile/Profile";
 import DashboardHome from "../DashboardComponents/DashboardHome/DashboardHome";
 import EditReq from "../DashboardComponents/EditReq/EditReq";
 import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
-import DeleteReq from "../DashboardComponents/DeleteReq/DeleteReq";
+
 
 
 
@@ -99,10 +99,7 @@ const router = createBrowserRouter([
         path:'view/:id',
         Component:ViewReq,
       },
-      {
-        path:'delete',
-        Component:DeleteReq,
-      },
+     
       
 
 

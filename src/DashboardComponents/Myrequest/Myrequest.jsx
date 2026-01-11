@@ -1,96 +1,140 @@
-import React, { useEffect, useState } from 'react';
-import useAxiosSecure from '../../Hooks/useAxiosSecure';
+import React, { useEffect, useState } from "react";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Myrequest = () => {
-    const axiosSecure=useAxiosSecure();
-    const [myrequest,setMyrequest] = useState([])
-    const [totalrequest, setTotalrequest] = useState(0)
-    const [itemperpage, setItemperpage] = useState(10)
-    const [currentpage, setCurrentpage] = useState(1)
+  const axiosSecure = useAxiosSecure();
 
-    useEffect(()=>{
-        axiosSecure.get(`/myrequest?page=${currentpage-1}&size=${itemperpage}`)
-        .then(res=>{
-           
-            setMyrequest(res.data.request);
-            console.log(res.data)
-            setTotalrequest(res.data.totalRequest);
+  const [myrequest, setMyrequest] = useState([]);
+  const [totalrequest, setTotalrequest] = useState(0);
+  const [itemperpage, setItemperpage] = useState(10);
+  const [currentpage, setCurrentpage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("all");
 
-        })
-    }, [axiosSecure, currentpage, itemperpage])
+  useEffect(() => {
+    axiosSecure
+      .get(`/myrequest?page=${currentpage - 1}&size=${itemperpage}`)
+      .then((res) => {
+        setMyrequest(res.data.request);
+        setTotalrequest(res.data.totalRequest);
+      });
+  }, [axiosSecure, currentpage, itemperpage]);
 
-    const numberOfPages= Math.ceil(totalrequest/itemperpage)
+  const numberOfPages = Math.ceil(totalrequest / itemperpage);
+  const pages = [...Array(numberOfPages).keys()].map((e) => e + 1);
 
-    const pages= [...Array(numberOfPages).keys()].map(e => e+1)
+  const onlcickpre = () => {
+    if (currentpage > 1) setCurrentpage(currentpage - 1);
+  };
 
- console.log('myrequestdata',numberOfPages ,pages)
+  const onlcicknext = () => {
+    if (currentpage < pages.length) setCurrentpage(currentpage + 1);
+  };
 
- const onlcickpre = () =>{
-  if(currentpage>1)
-  setCurrentpage(currentpage-1)
- }
- const onlcicknext = () =>{
-  if(currentpage<pages.length)
-  setCurrentpage(currentpage+1)
- }
+  
+  const filteredRequests =
+    statusFilter == "all"
+      ? myrequest
+      : myrequest.filter(
+          (req) => req?.donor_status?.toLowerCase() === statusFilter
+        );
+
+  return (
+    <div className="p-4">
+     
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
+        <h2 className="text-xl font-semibold">
+          My Donation Requests
+        </h2>
+
+        <select
+          className="select select-bordered w-full md:w-52"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="inprogress">In Progress</option>
+          <option value="done">Done</option>
+          <option value="canceled">Canceled</option>
+        </select>
+      </div>
+
     
-    return (
-        <div>
-           
-                    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* row 1 */}
-      {
-        myrequest.map((my, index) =>
-             <tr>
-        <th>{(currentpage*10) + (index+1)-10}</th>
-        <td>{my?.requesterName}</td>
-        <td>{my?.hospitalName}</td>
-        <td>Blue</td>
-      </tr>
+      <div className="overflow-x-auto rounded-lg border border-base-300 bg-base-100">
+        <table className="table table-zebra">
+          <thead className="bg-base-200">
+            <tr>
+              <th>#</th>
+              <th>Requester</th>
+              <th>Hospital</th>
+              <th>Status</th>
+            </tr>
+          </thead>
 
-        )
-      }
-     
-     
-     
-    </tbody>
-  </table>
-</div>
+          <tbody>
+            {filteredRequests.map((my, index) => (
+              <tr key={my?._id}>
+                <td>{currentpage * 10 + index + 1 - 10}</td>
+                <td>{my?.requesterName}</td>
+                <td>{my?.hospitalName}</td>
+                <td>
+                  <span
+                    className={`badge capitalize
+                      ${my?.donor_status === "pending" && "badge-warning"}
+                      ${my?.donor_status === "inprogress" && "badge-info"}
+                      ${my?.donor_status === "done" && "badge-success"}
+                      ${my?.donor_status === "canceled" && "badge-error"}
+                    `}
+                  >
+                    {my?.donor_status}
+                  </span>
+                </td>
+              </tr>
+            ))}
 
-<div className='flex-1 justify-center items-center'>
-    <button className='btn  hover:bg-black hover:text-white'
-   onClick={()=>onlcickpre()} >pre</button>
-    {
-        pages.map( page =>{
-           return <button 
-           className={`btn mr-2 ${currentpage == page ? 'bg-black text-white' : ''}`}
-           onClick={()=>setCurrentpage(page)}
-            >{page}</button>
-        })
-    }
-    <button
-  onClick={onlcicknext}
-  className='btn  hover:bg-black hover:text-white'
->
-  Next
-</button>
+            {filteredRequests.length === 0 && (
+              <tr>
+                <td colSpan="4" className="text-center py-6">
+                  No donation requests found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-</div>
+      {/* Pagination */}
+      <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+        <button
+          className="btn btn-outline btn-sm"
+          onClick={onlcickpre}
+        >
+          Prev
+        </button>
 
-               
-        </div>
-    );
+        {pages.map((page) => (
+          <button
+            key={page}
+            className={`btn btn-sm ${
+              currentpage === page
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() => setCurrentpage(page)}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={onlcicknext}
+          className="btn btn-outline btn-sm"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Myrequest;

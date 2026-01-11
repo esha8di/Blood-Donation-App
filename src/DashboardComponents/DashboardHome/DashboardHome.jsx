@@ -2,59 +2,92 @@ import React, { useContext, useEffect, useState } from "react";
 import { Contextapi } from "../../Authprovider/Authprovider";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Link } from "react-router";
-
+import swal from 'sweetalert';
 const DashboardHome = () => {
   const { user } = useContext(Contextapi);
   const axiosSecure = useAxiosSecure();
-  const [currentUser, setCurrentUser] =useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
 
-  const fetchData = () =>{
-     axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
+  const fetchData = () => {
+    axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
       console.log(res.data);
-      setCurrentUser(res.data)
+      setCurrentUser(res.data);
     });
-
-  }
+  };
   useEffect(() => {
-    fetchData()
-   
+    fetchData();
   }, [axiosSecure, user]);
 
-  const handlestatus =(_id, status)=>{
-    console.log(_id)
-    
-    axiosSecure.patch(`/update/request/status?id=${_id}&status=${status}`)
-      .then(res=>{
-        console.log(res.data)
-        fetchData()
-       
-      })
-  }
+  const handlestatus = (_id, status) => {
+    console.log(_id);
+
+    axiosSecure
+      .patch(`/update/request/status?id=${_id}&status=${status}`)
+      .then((res) => {
+        console.log(res.data);
+        fetchData();
+      });
+  };
+
+  const handledelete = (id) => {
+  swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this file!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      axiosSecure.delete(`/myrequest/${id}`)
+        .then((res) => {
+          if (res.data.deletedCount > 0) {
+            const remainingReqs = currentUser.filter(
+              (us) => us?._id !== id
+            );
+            setCurrentUser(remainingReqs);
+
+            swal("Deleted successfully!", {
+              icon: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          swal("Something went wrong!", {
+            icon: "error",
+          });
+        });
+    } else {
+      swal("Your file is safe!");
+    }
+  });
+};
+
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Welcome Section */}
-     <div className="bg-white rounded-xl shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-  {/* Left content */}
-  <div>
-    <h2 className="text-xl md:text-2xl font-semibold">
-      Welcome, {user?.displayName}
-    </h2>
-    <p className="text-gray-500 text-sm">
-      Manage your blood donation requests here
-    </p>
-  </div>
+      <div className="bg-white rounded-xl shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        {/* Left content */}
+        <div>
+          <h2 className="text-xl md:text-2xl font-semibold">
+            Welcome, {user?.displayName}
+          </h2>
+          <p className="text-gray-500 text-sm">
+            Manage your blood donation requests here
+          </p>
+        </div>
 
-  {/* Right aligned Back button */}
-  <Link
-    to="/"
-    className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium
+        {/* Right aligned Back button */}
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium
                rounded-lg border border-gray-300 text-gray-700
                hover:bg-gray-100 hover:border-gray-400
                transition w-fit"
-  >
-    ← Back
-  </Link>
-</div>
+        >
+          ← Back
+        </Link>
+      </div>
 
       {/* Recent Donation Requests */}
       <div className="space-y-4">
@@ -99,7 +132,6 @@ const DashboardHome = () => {
 
             {/* Donor Info (shown only in progress – UI only) */}
 
-            
             <div className="md:col-span-2 lg:col-span-3 border-t pt-3">
               <p className="text-sm text-gray-500">Donor Information</p>
               <p className="text-sm">
@@ -112,29 +144,34 @@ const DashboardHome = () => {
 
             {/* Action Buttons */}
             <div className="md:col-span-2 lg:col-span-3 flex flex-wrap gap-2 justify-end">
-              {
-                u?.donor_status == "inprogress"
-                && 
-                (<>
-                <button onClick={()=>handlestatus(u?._id, "Done")} className="px-3 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600">
-                Done
-              </button>
-              <button onClick={()=>handlestatus(u?._id, "Cancel")} className="px-3 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600">
-                Cancel
-              </button></>)
-              }
-             
-              
+              {u?.donor_status == "inprogress" && (
+                <>
+                  <button
+                    onClick={() => handlestatus(u?._id, "Done")}
+                    className="px-3 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600"
+                  >
+                    Done
+                  </button>
+                  <button
+                    onClick={() => handlestatus(u?._id, "Cancel")}
+                    className="px-3 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600"
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
 
               {/* CRUD Buttons */}
               <button className="px-3 py-1 text-sm rounded border border-blue-500 text-blue-500 hover:bg-blue-50">
-               <Link to={`/dashboard/view/${u?._id}`}>View</Link> 
+                <Link to={`/dashboard/view/${u?._id}`}>View</Link>
               </button>
               <button className="px-3 py-1 text-sm rounded border border-yellow-500 text-yellow-500 hover:bg-yellow-50">
-               <Link to={`/dashboard/edit/${u?._id}`}>Edit</Link>
+                <Link to={`/dashboard/edit/${u?._id}`}>Edit</Link>
               </button>
-              <button className="px-3 py-1 text-sm rounded border border-red-500 text-red-500 hover:bg-red-50">
-               <Link to="/dashboard/delete">Delete</Link>
+              <button
+              onClick={()=>handledelete(u?._id)}
+               className="px-3 py-1 text-sm rounded border border-red-500 text-red-500 hover:bg-red-50">
+                Delete
               </button>
             </div>
           </div>
@@ -143,8 +180,12 @@ const DashboardHome = () => {
 
       {/* View All Requests Button */}
       <div className="text-center">
-        <button className="px-6 py-2 rounded-lg bg-primary text-white hover:bg-primary/90">
-          View My All Requests
+        <button className="px-6 py-2 rounded-lg bg-black text-white hover:bg-black/90">
+         
+        <Link to="/dashboard/myrequest" >
+        View My All Requests
+        </Link>
+          
         </button>
       </div>
     </div>

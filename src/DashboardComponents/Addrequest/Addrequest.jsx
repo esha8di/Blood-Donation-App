@@ -3,9 +3,12 @@ import { Contextapi } from "../../Authprovider/Authprovider";
 import axios from "axios";
 // import useAxios from "../../Hooks/useAxios";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Link} from "react-router";
+import toast from "react-hot-toast";
 
 const Addrequest = () => {
   const { user } = useContext(Contextapi);
+  // const navigate = useNavigate();
 
   const axiosSecure=useAxiosSecure();
 
@@ -60,7 +63,9 @@ const Addrequest = () => {
     axiosSecure.post('/requests', donationRequest)
     .then(res=>{
       console.log('donation',res);
-      alert(res.data.insertedId);
+      // alert(res.data.insertedId);
+      // navigate('/dashboard/myrequest');
+      toast.success('Request has been added')
 
     })
 
@@ -202,7 +207,10 @@ const Addrequest = () => {
 
          
           <button type="submit" className="btn bg-black btn-primary w-full mt-4">
-            Request Blood
+          
+           Request Blood
+          
+            
           </button>
         </form>
       </div>
