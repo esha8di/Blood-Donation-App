@@ -3,8 +3,9 @@ import { NavLink } from "react-router";
 import { Contextapi } from "../../Authprovider/Authprovider";
 
 const Aside = () => {
-  const { role } = useContext(Contextapi);
+  const { role,userstatus } = useContext(Contextapi);
   const [open, setOpen] = useState(false);
+  
 
   const linkClass = ({ isActive }) =>
     `block px-4 py-2 rounded-md transition font-medium
@@ -16,7 +17,7 @@ const Aside = () => {
 
   return (
     <>
-      {/* 🔹 MOBILE TOP BAR */}
+     
       <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <h2 className="text-lg font-bold">Dashboard</h2>
 
@@ -28,16 +29,21 @@ const Aside = () => {
         </button>
       </div>
 
-      {/* 🔹 MOBILE DROPDOWN MENU */}
+     
       {open && (
         <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 space-y-2">
           <NavLink to="/dashboard" end className={linkClass} onClick={() => setOpen(false)}>
             Home
           </NavLink>
-
-          <NavLink to="/dashboard/addrequest" className={linkClass} onClick={() => setOpen(false)}>
+           {
+            userstatus == "active" && (
+               <NavLink to="/dashboard/addrequest" className={linkClass} onClick={() => setOpen(false)}>
             Add Request
           </NavLink>
+
+            )
+           }
+         
 
           {role === "admin" && (
             <NavLink to="/dashboard/allusers" className={linkClass} onClick={() => setOpen(false)}>
@@ -55,7 +61,7 @@ const Aside = () => {
         </div>
       )}
 
-      {/* 🔹 DESKTOP SIDEBAR */}
+     
       <aside className="hidden md:block bg-white border-r border-gray-200 w-64 min-h-screen p-5">
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-900">Dashboard</h2>
@@ -67,6 +73,9 @@ const Aside = () => {
             Home
           </NavLink>
 
+
+
+          
           <NavLink to="/dashboard/addrequest" className={linkClass}>
             Add Request
           </NavLink>
