@@ -7,7 +7,7 @@ import Dashboardlayout from "../Dashboardlayout/Dashboardlayout";
 
 import Addrequest from "../DashboardComponents/Addrequest/Addrequest";
 import Dashboard from "../DashboardComponents/Dashboard/Dashboard";
-import Allusers from "../DashboardComponents/Allusers/Allusers";
+// import Allusers from "../DashboardComponents/Allusers/Allusers";
 import Privaterouter from "./Privaterouter";
 import Myrequest from "../DashboardComponents/Myrequest/Myrequest";
 import Donate from "../components/Donate/Donate";
@@ -18,6 +18,7 @@ import DashboardHome from "../DashboardComponents/DashboardHome/DashboardHome";
 import EditReq from "../DashboardComponents/EditReq/EditReq";
 import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
 import Blockstatus from "../DashboardComponents/Blockstatus/Blockstatus";
+import AllVarUsers from "../DashboardComponents/AllVarUsers/AllVarUsers";
 
 
 
@@ -82,7 +83,7 @@ const router = createBrowserRouter([
       
       {
         path:'allusers',
-        Component:Allusers,
+      Component:AllVarUsers,
       },
       {
         path:'myrequest',

@@ -3,6 +3,8 @@ import { Contextapi } from "../../Authprovider/Authprovider";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Link } from "react-router";
 import swal from 'sweetalert';
+import { FaUsers, FaHandHoldingHeart, FaMoneyBillWave } from "react-icons/fa";
+
 const DashboardHome = () => {
   const { user,role } = useContext(Contextapi);
  
@@ -29,7 +31,7 @@ const DashboardHome = () => {
     axiosSecure.get('/getrequest')
     .then(res=>{
       // eslint-disable-next-line react-hooks/immutability
-      fetchData();
+      
       setTotalrequest(res.data)
     })
   },[axiosSecure])
@@ -96,7 +98,7 @@ const DashboardHome = () => {
           </p>
         </div>
 
-        {/* Right aligned Back button */}
+        {/*  Back button */}
         <Link
           to="/"
           className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium
@@ -107,11 +109,11 @@ const DashboardHome = () => {
           ← Back
         </Link>
       </div>
-      {role === "admin" && (
+    {role === "admin" && (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
       <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl">
-        👥
+        <FaUsers />
       </div>
       <div>
         <h4 className="text-sm text-gray-500">Total Donors</h4>
@@ -121,7 +123,7 @@ const DashboardHome = () => {
 
     <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
       <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-xl">
-        📄
+        <FaHandHoldingHeart />
       </div>
       <div>
         <h4 className="text-sm text-gray-500">Total Requests</h4>
@@ -131,7 +133,7 @@ const DashboardHome = () => {
 
     <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
       <div className="w-12 h-12 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 text-xl">
-        💰
+        <FaMoneyBillWave />
       </div>
       <div>
         <h4 className="text-sm text-gray-500">Total Funding</h4>
@@ -140,6 +142,7 @@ const DashboardHome = () => {
     </div>
   </div>
 )}
+
 
 
       {/* Recent Donation Requests */}
