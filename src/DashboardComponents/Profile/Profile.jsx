@@ -53,13 +53,13 @@ const Profile = () => {
     }
   }, [currentUser]);
 
-  /* ---------------- Handle Change ---------------- */
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  /* ---------------- Save Profile ---------------- */
+ 
   const onclickUpdate = (e) => {
     e.preventDefault();
 
@@ -77,10 +77,10 @@ const Profile = () => {
   <div className="min-h-screen bg-gray-100 p-4 md:p-8">
     <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden">
       
-      {/* Header */}
+     
       <div className="flex items-center justify-between px-6 py-4 border-b">
         <h2 className="text-lg md:text-xl font-semibold text-gray-800">
-          My Profile
+          My Profile({currentUser?.status})
         </h2>
 
         {!isEditing && (
@@ -93,7 +93,7 @@ const Profile = () => {
         )}
       </div>
 
-      {/* Body */}
+      
       <form onSubmit={onclickUpdate} className="p-6 space-y-6">
         
        

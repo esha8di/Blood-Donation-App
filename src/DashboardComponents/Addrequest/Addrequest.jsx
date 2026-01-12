@@ -16,6 +16,7 @@ const Addrequest = () => {
   const [districts, setDistricts] = useState([]);
   const [upazila, setUpazila] = useState("");
   const [district, setDistrict] = useState("");
+   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     axios.get("/upazila.json").then((res) => {
@@ -27,8 +28,25 @@ const Addrequest = () => {
     });
   }, []);
 
+  
+
+  useEffect(() => {
+      if (!user?.email) return;
+  
+      axiosSecure.get(`/users/profile/${user.email}`).then((res) => {
+        setCurrentUser(res.data);
+      });
+    }, [axiosSecure, user?.email]);
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if(currentUser.status === "blocked") 
+      {
+        toast.error("You are a blocked user. You can't send request.")
+        return
+      }
 
     
     const requesterName = e.target.requesterName.value;
@@ -63,6 +81,7 @@ const Addrequest = () => {
     axiosSecure.post('/requests', donationRequest)
     .then(res=>{
       console.log('donation',res);
+      
       // alert(res.data.insertedId);
       // navigate('/dashboard/myrequest');
       toast.success('Request has been added')

@@ -17,6 +17,7 @@ import Profile from "../DashboardComponents/Profile/Profile";
 import DashboardHome from "../DashboardComponents/DashboardHome/DashboardHome";
 import EditReq from "../DashboardComponents/EditReq/EditReq";
 import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
+import Blockstatus from "../DashboardComponents/Blockstatus/Blockstatus";
 
 
 
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path:'view/:id',
         Component:ViewReq,
+      },
+      {
+        path:'block',
+        Component:Blockstatus,
       },
      
       

@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { Contextapi } from "../../Authprovider/Authprovider";
+// import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Aside = () => {
-  const { role,userstatus } = useContext(Contextapi);
+ 
+  const { role } = useContext(Contextapi);
   const [open, setOpen] = useState(false);
+
   
 
   const linkClass = ({ isActive }) =>
@@ -35,14 +38,12 @@ const Aside = () => {
           <NavLink to="/dashboard" end className={linkClass} onClick={() => setOpen(false)}>
             Home
           </NavLink>
-           {
-            userstatus == "active" && (
+           
                <NavLink to="/dashboard/addrequest" className={linkClass} onClick={() => setOpen(false)}>
             Add Request
           </NavLink>
 
-            )
-           }
+            
          
 
           {role === "admin" && (
