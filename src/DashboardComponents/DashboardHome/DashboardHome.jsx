@@ -4,9 +4,15 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Link } from "react-router";
 import swal from 'sweetalert';
 const DashboardHome = () => {
-  const { user } = useContext(Contextapi);
+  const { user,role } = useContext(Contextapi);
+ 
   const axiosSecure = useAxiosSecure();
   const [currentUser, setCurrentUser] = useState([]);
+
+  const [totaldonors,setTotaldonors] = useState([]);
+  const [totalrequest,setTotalrequest] = useState([]);
+
+ 
 
   const fetchData = () => {
     axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
@@ -14,6 +20,19 @@ const DashboardHome = () => {
       setCurrentUser(res.data);
     });
   };
+
+   useEffect(()=>{
+    axiosSecure.get('/users')
+    .then(res=>{
+      setTotaldonors(res.data);
+    })
+    axiosSecure.get('/getrequest')
+    .then(res=>{
+      // eslint-disable-next-line react-hooks/immutability
+      fetchData();
+      setTotalrequest(res.data)
+    })
+  },[axiosSecure])
   useEffect(() => {
     fetchData();
   }, [axiosSecure, user]);
@@ -88,6 +107,40 @@ const DashboardHome = () => {
           ← Back
         </Link>
       </div>
+      {role === "admin" && (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl">
+        👥
+      </div>
+      <div>
+        <h4 className="text-sm text-gray-500">Total Donors</h4>
+        <p className="text-2xl font-bold">{totaldonors.length}</p>
+      </div>
+    </div>
+
+    <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-xl">
+        📄
+      </div>
+      <div>
+        <h4 className="text-sm text-gray-500">Total Requests</h4>
+        <p className="text-2xl font-bold">{totalrequest.length}</p>
+      </div>
+    </div>
+
+    <div className="bg-white rounded-xl shadow p-5 flex items-center gap-4">
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 text-xl">
+        💰
+      </div>
+      <div>
+        <h4 className="text-sm text-gray-500">Total Funding</h4>
+        <p className="text-2xl font-bold">৳ 0</p>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Recent Donation Requests */}
       <div className="space-y-4">
