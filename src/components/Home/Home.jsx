@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router";
+import { Contextapi } from "../../Authprovider/Authprovider";
+ import { FiPhone, FiMail } from "react-icons/fi";
 
 const Home = () => {
+  const {user} = useContext(Contextapi);
   return (
     <div className="w-full">
 
@@ -12,14 +16,22 @@ const Home = () => {
           Join our blood donation community and help people in need. Your one
           step can save many lives.
         </p>
-
+        
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="btn bg-black text-white hover:bg-gray-800 px-8">
-            Join as a Donor
+         {
+          !user &&
+          (
+            <button className="btn bg-black text-white hover:bg-gray-800 px-8">
+            <Link to='/register'>Join as a Donor</Link>
           </button>
+
+          )
+         }
+          <Link to='/search'>
           <button className="btn border border-black text-black hover:bg-black hover:text-white px-8">
             Search Donors
           </button>
+          </Link>
         </div>
       </section>
 
@@ -55,44 +67,71 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-gray-100 py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-10 text-black">
-          Contact Us
-        </h2>
+    
 
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-          <form className="bg-white p-6 rounded-lg shadow-md space-y-4 border">
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="input input-bordered w-full"
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="input input-bordered w-full"
-            />
-            <textarea
-              placeholder="Your Message"
-              className="textarea textarea-bordered w-full"
-              rows="4"
-            ></textarea>
-            <button className="btn bg-black text-white hover:bg-gray-800 w-full">
-              Send Message
-            </button>
-          </form>
+<section className="bg-gray-100 py-16 px-4">
+  <h2 className="text-3xl font-bold text-center mb-4 text-black">
+    Contact Us
+  </h2>
+  <p className="text-center text-gray-600 mb-10 max-w-xl mx-auto">
+    Have a question or want to get in touch? We’d love to hear from you.
+  </p>
 
-          <div className="flex flex-col justify-center text-center md:text-left">
-            <h3 className="text-xl font-semibold mb-4 text-black">Get in Touch</h3>
-            <p className="text-gray-700 mb-2">
-              Phone: <span className="font-medium">+880 1234 567890</span>
-            </p>
-            <p className="text-gray-700">
-              Email: <span className="font-medium">support@dropblood.com</span>
-            </p>
-          </div>
-        </div>
-      </section>
+  <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+
+    {/* Contact Form */}
+    <form className="bg-white p-6 rounded-lg shadow-md space-y-4 border">
+      <input
+        type="text"
+        placeholder="Your Name"
+        className="input input-bordered w-full focus:outline-none focus:border-black"
+      />
+
+      <input
+        type="email"
+        placeholder="Your Email"
+        className="input input-bordered w-full focus:outline-none focus:border-black"
+      />
+
+      <textarea
+        placeholder="Your Message"
+        className="textarea textarea-bordered w-full focus:outline-none focus:border-black"
+        rows="4"
+      ></textarea>
+
+      <button className="btn bg-black text-white hover:bg-gray-800 w-full">
+        Send Message
+      </button>
+    </form>
+
+    {/* Contact Info */}
+    <div className="flex flex-col justify-center gap-6 text-center md:text-left">
+      <h3 className="text-xl font-semibold text-black mb-2">
+        Get in Touch
+      </h3>
+
+      <div className="space-y-4">
+        {/* Phone */}
+        <p className="text-gray-700 flex items-center justify-center md:justify-start gap-2">
+          <FiPhone className="text-black w-5 h-5" />
+          <span className="font-medium">+880 1234 567890</span>
+        </p>
+
+        {/* Email */}
+        <p className="text-gray-700 flex items-center justify-center md:justify-start gap-2">
+          <FiMail className="text-black w-5 h-5" />
+          <span className="font-medium">support@dropblood.com</span>
+        </p>
+      </div>
+
+      <p className="text-sm text-gray-500 max-w-sm mx-auto md:mx-0">
+        Our team usually responds within 24 hours. Your message matters to us.
+      </p>
+    </div>
+  </div>
+</section>
+
+
 
       <footer className="bg-black text-white py-10 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
