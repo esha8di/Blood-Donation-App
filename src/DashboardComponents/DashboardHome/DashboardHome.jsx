@@ -20,6 +20,7 @@ const DashboardHome = () => {
     axiosSecure.get(`/myrequest/${user?.email}`).then((res) => {
       console.log(res.data);
       setCurrentUser(res.data);
+      
     });
   };
 

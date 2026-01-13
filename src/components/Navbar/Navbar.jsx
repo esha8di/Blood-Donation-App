@@ -13,7 +13,7 @@ const Navbar = () => {
   const navLinks = (
     <>
       <NavLink
-        to="/"
+        to="/donationReq"
         className="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
       >
         Donation Requests
@@ -92,13 +92,17 @@ const Navbar = () => {
             >
               Login
             </Link>
-
-            <Link
+          
+            {
+              user && (
+                <Link
               to="/dashboard"
               className="px-4 py-2 rounded border border-red-900 hover:bg-gray-100 transition"
             >
               Dashboard
             </Link>
+              )
+            }
           </>
         )}
 

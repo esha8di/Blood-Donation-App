@@ -19,6 +19,7 @@ import EditReq from "../DashboardComponents/EditReq/EditReq";
 import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
 import Blockstatus from "../DashboardComponents/Blockstatus/Blockstatus";
 import AllVarUsers from "../DashboardComponents/AllVarUsers/AllVarUsers";
+import DonationReq from "../pages/DonationReq/DonationReq";
 
 
 
@@ -58,6 +59,11 @@ const router = createBrowserRouter([
         {
             path:"/search",
             Component:Searchrequest,
+
+        },
+        {
+            path:"/donationReq",
+            Component:DonationReq,
 
         },
 
