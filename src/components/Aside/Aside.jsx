@@ -7,6 +7,8 @@ const Aside = () => {
  
   const { role } = useContext(Contextapi);
   const [open, setOpen] = useState(false);
+  console.log(role)
+console.log("ASIDE COMPONENT LOADED");
 
   
 
@@ -36,7 +38,7 @@ const Aside = () => {
       {open && (
         <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 space-y-2">
           <NavLink to="/dashboard" end className={linkClass} onClick={() => setOpen(false)}>
-            Home
+            Home 
           </NavLink>
            
                <NavLink to="/dashboard/addrequest" className={linkClass} onClick={() => setOpen(false)}>
@@ -47,14 +49,31 @@ const Aside = () => {
          
 
           {role === "admin" && (
+            
+            <>
             <NavLink to="/dashboard/allusers" className={linkClass} onClick={() => setOpen(false)}>
               All Users
             </NavLink>
+            <NavLink to="/" className={linkClass} onClick={() => setOpen(false)}>
+              All Requests
+            </NavLink>
+            </>
+            
+           
           )}
 
-          <NavLink to="/dashboard/myrequest" className={linkClass} onClick={() => setOpen(false)}>
+
+          {
+            role!== "admin" && 
+            (
+               <NavLink to="/dashboard/myrequest" className={linkClass} onClick={() => setOpen(false)}>
             My Requests
           </NavLink>
+
+            )
+          }
+         
+         
 
           <NavLink to="/dashboard/profile" className={linkClass} onClick={() => setOpen(false)}>
             My Profile
@@ -82,14 +101,25 @@ const Aside = () => {
           </NavLink>
 
           {role === "admin" && (
+            <>
             <NavLink to="/dashboard/allusers" className={linkClass}>
               All Users
             </NavLink>
+            <NavLink to="/" className={linkClass}>
+             All Requests
+            </NavLink>
+            </>
           )}
 
-          <NavLink to="/dashboard/myrequest" className={linkClass}>
+          {
+            role!== "admin" && (
+              <NavLink to="/dashboard/myrequest" className={linkClass}>
             My Requests
           </NavLink>
+
+            )
+          }
+          
 
           <NavLink to="/dashboard/profile" className={linkClass}>
             My Profile

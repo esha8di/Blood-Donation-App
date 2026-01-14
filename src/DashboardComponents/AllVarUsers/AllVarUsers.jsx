@@ -19,7 +19,7 @@ const AllVarUsers = () => {
 
     const handleStatusChange = (email, status) => {
         axiosSecure.patch(`/update/user/status?email=${email}&status=${status}`)
-            .then(res => fetchdata());
+            .then((res) => fetchdata());
     }
 
     const handleChangeRole = (id, newRole) => {
@@ -32,8 +32,8 @@ const AllVarUsers = () => {
     }
 
     return (
-        <div className="w-full overflow-x-auto">
-            <table className="w-full min-w-[600px] md:min-w-full border border-gray-200 table-auto">
+        <div className="w-full  border ">
+            <table className="w-full min-w-[600px] md:min-w-full border border-green-900 table-auto overflow-x-auto">
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="px-2 py-2 border text-left">Avatar</th>
