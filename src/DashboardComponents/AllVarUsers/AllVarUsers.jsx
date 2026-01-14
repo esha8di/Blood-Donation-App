@@ -32,6 +32,16 @@ const AllVarUsers = () => {
       })
 
     }
+
+    const handleChangeRole = (id, newRole) =>{
+     axiosSecure.patch(`/users/roleset/${id}`, {role:newRole})
+     .then(res=>{
+      console.log(res.data)
+     setUsers(prevUsers =>
+        prevUsers.map(u => u._id === id ? { ...u, role: newRole } : u)
+      );
+     })
+    }
     return (
       <div className="overflow-x-auto">
   <table className="min-w-full border border-gray-200">
@@ -59,7 +69,20 @@ const AllVarUsers = () => {
 
           <td className="px-4 py-2 border">{u.email}</td>
           <td className="px-4 py-2 border">{u.name}</td>
-          <td className="px-4 py-2 border">{u.role}</td>
+         <td className="px-4 py-2 border">
+  <select
+    value={u.role}
+    onChange={(e)=>handleChangeRole(u?._id, e.target.value)}
+    className="border border-gray-300 rounded-md px-2 py-1 text-sm
+               focus:outline-none focus:ring-1 focus:ring-black
+               bg-white text-black"
+  >
+    <option value="admin">Admin</option>
+    <option value="volunteer">Volunteer</option>
+    <option value="donor">Donor</option>
+  </select>
+</td>
+
 
           <td className="px-4 py-2 border">
             <span
