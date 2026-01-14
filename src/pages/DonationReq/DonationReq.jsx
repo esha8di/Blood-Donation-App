@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import React, {useEffect, useState } from "react";
 import { Contextapi } from "../../Authprovider/Authprovider";
 import {
   FaHospital,
@@ -9,19 +8,22 @@ import {
   FaClock,
   FaTint,
 } from "react-icons/fa";
+import useAxios from "../../Hooks/useAxios";
 
 const DonationReq = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosIntance = useAxios();
   const [requests, setMyrequests] = useState([]);
-  const { user } = useContext(Contextapi);
+//   const { user } = useContext(Contextapi);
 
+  
   useEffect(() => {
-    if (!user) return;
-    axiosSecure.get("/getrequest").then((res) => {
+   
+    axiosIntance.get("/status").then((res) => {
         const remainingReq = res.data.filter(request=>request.donor_status == "pending")
       setMyrequests(remainingReq);
+      console.log(remainingReq);
     });
-  }, [axiosSecure, user]);
+  }, [axiosIntance]);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">

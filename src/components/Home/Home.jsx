@@ -2,9 +2,17 @@ import React, { useContext } from "react";
 import { Link } from "react-router";
 import { Contextapi } from "../../Authprovider/Authprovider";
  import { FiPhone, FiMail } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const {user} = useContext(Contextapi);
+  const handlemsg = (e) =>{
+    e.preventDefault();
+
+    toast.success("Message has been sent !!");
+    e.target.reset();
+
+  }
   return (
     <div className="w-full">
 
@@ -80,7 +88,7 @@ const Home = () => {
   <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
 
     {/* Contact Form */}
-    <form className="bg-white p-6 rounded-lg shadow-md space-y-4 border">
+    <form onSubmit={handlemsg} className="bg-white p-6 rounded-lg shadow-md space-y-4 border">
       <input
         type="text"
         placeholder="Your Name"

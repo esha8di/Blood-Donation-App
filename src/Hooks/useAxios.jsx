@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosintance= axios.create({
-    baseURL:'http://localhost:5000'
+    baseURL:'https://backend-tau-rust-31.vercel.app'
 })
 
 const useAxios=()=>{

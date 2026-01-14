@@ -9,15 +9,22 @@ const Navbar = () => {
     signout().catch((error) => console.log(error));
   };
 
-  /* ================= NAV LINKS (CENTER) ================= */
+  
   const navLinks = (
     <>
+    <NavLink
+        to="/"
+        className="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        Home
+      </NavLink>
       <NavLink
         to="/donationReq"
         className="block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
       >
         Donation Requests
       </NavLink>
+      
 
       {user && (
         <>
@@ -36,9 +43,9 @@ const Navbar = () => {
 
   return (
     <div className="navbar bg-red shadow-sm px-4 md:px-8">
-      {/* ================= START ================= */}
+      
       <div className="navbar-start flex items-center gap-2">
-        {/* Mobile Menu */}
+       
         <div className="dropdown">
           <div tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
@@ -65,7 +72,7 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Logo */}
+       
         <img
           className="h-12 hidden md:block rounded-xl"
           src="https://www.nicepng.com/png/detail/364-3647802_blood-symbol-png-blood-donation-app-logo.png"
@@ -76,14 +83,14 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* ================= CENTER ================= */}
+      
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
 
-      {/* ================= END ================= */}
+     
       <div className="navbar-end flex items-center gap-2">
-        {/* NOT LOGGED IN */}
+        
         {!user && (
           <>
             <Link
@@ -106,7 +113,7 @@ const Navbar = () => {
           </>
         )}
 
-        {/* LOGGED IN */}
+      
         {user && (
           <div className="flex items-center gap-2">
             <img
