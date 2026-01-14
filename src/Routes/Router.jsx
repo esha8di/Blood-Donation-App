@@ -20,6 +20,7 @@ import ViewReq from "../DashboardComponents/ViewReq/ViewReq";
 import Blockstatus from "../DashboardComponents/Blockstatus/Blockstatus";
 import AllVarUsers from "../DashboardComponents/AllVarUsers/AllVarUsers";
 import DonationReq from "../pages/DonationReq/DonationReq";
+import AllRequests from "../DashboardComponents/AllRequests/AllRequests";
 
 
 
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
       {
         path:'block',
         Component:Blockstatus,
+      },
+      {
+        path:'allrequests',
+        Component:AllRequests,
       },
      
       

@@ -54,7 +54,7 @@ console.log("ASIDE COMPONENT LOADED");
             <NavLink to="/dashboard/allusers" className={linkClass} onClick={() => setOpen(false)}>
               All Users
             </NavLink>
-            <NavLink to="/" className={linkClass} onClick={() => setOpen(false)}>
+            <NavLink to="/dashboard/allrequests" className={linkClass} onClick={() => setOpen(false)}>
               All Requests
             </NavLink>
             </>
@@ -105,7 +105,7 @@ console.log("ASIDE COMPONENT LOADED");
             <NavLink to="/dashboard/allusers" className={linkClass}>
               All Users
             </NavLink>
-            <NavLink to="/" className={linkClass}>
+            <NavLink to="/dashboard/allrequests" className={linkClass}>
              All Requests
             </NavLink>
             </>
