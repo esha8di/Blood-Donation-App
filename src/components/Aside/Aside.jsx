@@ -45,7 +45,15 @@ console.log("ASIDE COMPONENT LOADED");
             Add Request
           </NavLink>
 
+          {
+            role === "volunteer" && (
+               <NavLink to="/dashboard/allrequests" className={linkClass} onClick={() => setOpen(false)}>
+              All Requests
+            </NavLink>
             
+
+            )
+          }
          
 
           {role === "admin" && (
@@ -64,7 +72,7 @@ console.log("ASIDE COMPONENT LOADED");
 
 
           {
-            role!== "admin" && 
+            role === "donor" && 
             (
                <NavLink to="/dashboard/myrequest" className={linkClass} onClick={() => setOpen(false)}>
             My Requests
@@ -100,6 +108,16 @@ console.log("ASIDE COMPONENT LOADED");
             Add Request
           </NavLink>
 
+           {
+            role === "volunteer" && (
+               <NavLink to="/dashboard/allrequests" className={linkClass} onClick={() => setOpen(false)}>
+              All Requests
+            </NavLink>
+            
+
+            )
+          }
+
           {role === "admin" && (
             <>
             <NavLink to="/dashboard/allusers" className={linkClass}>
@@ -111,8 +129,10 @@ console.log("ASIDE COMPONENT LOADED");
             </>
           )}
 
+          
+
           {
-            role!== "admin" && (
+            role === "donor" && (
               <NavLink to="/dashboard/myrequest" className={linkClass}>
             My Requests
           </NavLink>

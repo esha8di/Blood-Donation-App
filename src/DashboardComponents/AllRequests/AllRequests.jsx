@@ -16,9 +16,21 @@ const AllRequests = () => {
       .then((res) => {
         setMyrequest(res.data.request);
         setTotalrequest(res.data.totalRequest);
-        console.log(res.data.request)
+        console.log(res.data.request);
       });
   }, [axiosSecure, currentpage, itemperpage]);
+
+ const handlestatus = (id, newStatus) =>{
+  console.log(id,newStatus)
+  axiosSecure.patch(`/requests/status/${id}`,{status:newStatus})
+  .then(res=>{
+    setMyrequest((prev) =>
+        prev.map((req) =>
+          req._id === id ? { ...req, donor_status: newStatus } : req
+        )
+      );
+  })
+ }
 
   const numberOfPages = Math.ceil(totalrequest / itemperpage);
   const pages = [...Array(numberOfPages).keys()].map((e) => e + 1);
@@ -78,17 +90,35 @@ const AllRequests = () => {
                 <td>{my?.requesterName}</td>
                 <td>{my?.hospitalName}</td>
                 <td>
-                  <span
-                    className={`badge capitalize
-                      ${my?.donor_status === "pending" && "badge-warning"}
-                      ${my?.donor_status === "inprogress" && "badge-info"}
-                      ${my?.donor_status === "done" && "badge-success"}
-                      ${my?.donor_status === "canceled" && "badge-error"}
-                    `}
-                  >
-                    {my?.donor_status}
-                  </span>
-                </td>
+  <select
+    className="capitalize p-2 rounded border cursor-pointer"
+    value={my?.donor_status}
+    onChange={(e) => {
+      handlestatus(my?._id, e.target.value)
+      
+      
+    }}
+    style={{
+      backgroundColor:
+        my?.donor_status === "pending"
+          ? "#fbbf24" 
+          : my?.donor_status === "inprogress"
+          ? "#38bdf8" 
+          : my?.donor_status === "done"
+          ? "#22c55e" 
+          : my?.donor_status === "canceled"
+          ? "#ef4444" 
+          : "white",
+      color: "black",
+    }}
+  >
+    <option value="pending">pending</option>
+    <option value="inprogress">inprogress</option>
+    <option value="done">done</option>
+    <option value="canceled">canceled</option>
+  </select>
+</td>
+
               </tr>
             ))}
 
