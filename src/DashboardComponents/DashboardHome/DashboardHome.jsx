@@ -107,7 +107,7 @@ const DashboardHome = () => {
                hover:bg-gray-100 hover:border-gray-400
                transition w-fit"
         >
-          ← Back
+          Back
         </Link>
       </div>
     {role === "admin" && (

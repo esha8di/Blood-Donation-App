@@ -9,6 +9,7 @@ import {
   FaTint,
 } from "react-icons/fa";
 import useAxios from "../../Hooks/useAxios";
+import { Link } from "react-router";
 
 const DonationReq = () => {
   const axiosIntance = useAxios();
@@ -92,16 +93,28 @@ const DonationReq = () => {
             </div>
 
             {/* Footer */}
-            <div className="mt-6 pt-4 border-t border-gray-200 space-y-2 text-xs text-gray-500">
-              <p className="flex items-center gap-2">
-                <FaClock />
-                {new Date(req.donationDateTime).toLocaleString()}
-              </p>
-              <p className="flex items-center gap-2">
-                <FaEnvelope />
-                {req.requesterEmail}
-              </p>
-            </div>
+            {/* Footer */}
+<div className="mt-6 pt-4 border-t border-gray-200 space-y-2 text-xs text-gray-500">
+  <p className="flex items-center gap-2">
+    <FaClock />
+    {new Date(req.donationDateTime).toLocaleString()}
+  </p>
+  <p className="flex items-center gap-2">
+    <FaEnvelope />
+    {req.requesterEmail}
+  </p>
+</div>
+
+{/* View Button */}
+<div className="mt-4 flex justify-end">
+  <Link to={`/viewRequest/${req?._id}`}>
+  <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-red-400 transition">
+    View
+  </button>
+  </Link>
+  
+</div>
+
           </div>
         ))}
       </div>

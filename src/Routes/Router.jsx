@@ -21,6 +21,7 @@ import Blockstatus from "../DashboardComponents/Blockstatus/Blockstatus";
 import AllVarUsers from "../DashboardComponents/AllVarUsers/AllVarUsers";
 import DonationReq from "../pages/DonationReq/DonationReq";
 import AllRequests from "../DashboardComponents/AllRequests/AllRequests";
+import ReqView from "../pages/ReqView/ReqView";
 
 
 
@@ -67,6 +68,12 @@ const router = createBrowserRouter([
             Component:DonationReq,
 
         },
+        {
+          path:"/viewRequest/:id",
+          element:<Privaterouter>
+            <ReqView></ReqView>
+          </Privaterouter>
+        }
 
     ]
   },
